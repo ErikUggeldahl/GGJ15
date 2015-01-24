@@ -60,7 +60,6 @@ public class StunAbility : MonoBehaviour
         if (aiMovement == null)
             return;
 
-        // Replace this with the stun function when it becomes available
 		aiMovement.Stun(2f, 0.1f);
     }
 }
