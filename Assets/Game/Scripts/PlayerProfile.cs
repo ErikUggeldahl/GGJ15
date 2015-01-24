@@ -1,15 +1,11 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class PlayerProfile : MonoBehaviour {
+public class PlayerProfile : MonoBehaviour
+{
+    private string playerName = string.Empty;
+    public string PlayerName { set { playerName = value; } get { return playerName; } }
 
-	// Use this for initialization
-	void Start () {
-	
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	
-	}
+    private Color playerColour = Color.white;
+    public Color PlayerColour { set { playerColour = value; } get { return playerColour; } }
 }

@@ -24,13 +24,13 @@ public class Game : MonoBehaviour
 
 	void Start ()
     {
+        // ** Create architect player ** //
         GameObject newArchitect = GameObject.Instantiate(ArchitectPrefab, architectSpawnLocation.transform.position, Quaternion.identity) as GameObject;
         ArchitectPawn = newArchitect.GetComponent<ArchitectPawn>();
 
-        // Connected controllers
+        // ** Create builder players ** //
         bool[] connectedControllers = MP_Input.GetConnectedControllers();
 
-        // Create builders
         for(int i = 0; i < connectedControllers.Length; i++)
         {
             if(connectedControllers[i])
