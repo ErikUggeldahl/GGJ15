@@ -245,6 +245,9 @@ namespace MPInput
 
         public static bool[] GetConnectedControllers()
         {
+            if (instance == null)
+                CreateInstance();
+
             return controllersConnected;
         }
 
@@ -264,34 +267,6 @@ namespace MPInput
                     if (MP_Input.GetAnyButtonDown(Config.InputActions[i].ActionName))
                         Debug.Log(Config.InputActions[i].ActionName);
                 }
-            }
-        }
-
-        void OnGUI()
-        {
-            if (Application.isEditor && DEBUG_INPUT) // or check the app debug flag
-            {
-                string debugText = "";
-
-                //debugText += "Keyboard " + 0 + ":\n";
-                //for (int ii = 0; ii < Config.InputActions.Count; ii++)
-                //{
-                //    debugText += Config.InputActions[ii].ActionName + ": " + MP_Input.GetButton("Config.InputActions[i].ActionName", new MP_InputDeviceInfo(MP_eInputType.Keyboard, 0)) + "\n";
-                //}
-                //debugText += "\n";
-
-                for (int i = 0; i < controllersConnected.Length; i++)
-                {
-                    if (controllersConnected[i] == true)
-                    {
-                        debugText += "Controller " + i + ":\n";
-                        for (int ii = 0; ii < Config.InputActions.Count; ii++)
-                        {
-                            debugText += Config.InputActions[ii].ActionName + ": " + MP_Input.GetButton("Config.InputActions[i].ActionName", new MP_InputDeviceInfo(MP_eInputType.Controller, i)) + "\n";
-                        }
-                    }
-                }
-                GUI.Label(new Rect(0, 0, Screen.width, Screen.height), debugText);
             }
         }
 

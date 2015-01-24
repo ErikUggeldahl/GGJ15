@@ -15,8 +15,6 @@ public class BuilderPawn : MonoBehaviour
     {
         builderMovementScript = this.gameObject.AddComponent<BuilderInput>();
         builderMovementScript.Initialize(this, aInputDeviceInfo);
-
-
     }
 
     public void Fire()

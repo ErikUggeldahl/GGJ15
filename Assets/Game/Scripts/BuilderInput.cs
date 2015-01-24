@@ -5,6 +5,8 @@ using MPInput;
 
 public class BuilderInput : MonoBehaviour
 {
+    public float Drag = 2;
+
     private MP_InputDeviceInfo inputDeviceInfo = null;
     public MP_InputDeviceInfo InputDeviceInfo { get { return inputDeviceInfo; } }
 
@@ -35,10 +37,16 @@ public class BuilderInput : MonoBehaviour
 
         isPickupButtonPressed = MP_Input.GetButtonDown("BuilderFire", inputDeviceInfo);
         isFireButtonPressed = MP_Input.GetButtonDown("Pickup/Drop", inputDeviceInfo);
+    }
 
+    public void FixedUpdate()
+    {
         // Commit actions based on input
-        // TODO: Movement
+        Vector3 moveDirection = new Vector3(xAxisMove, 0, yAxisMove).normalized;
+        Vector3 moveForce = moveDirection * 20;
 
+        this.gameObject.rigidbody.drag = Drag;
+        this.gameObject.rigidbody.AddForce(moveForce);
 
         // Buttons
         if(isPickupButtonPressed)

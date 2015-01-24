@@ -12,10 +12,14 @@ public class Game : MonoBehaviour
     private List<BuilderPawn> BuilderPawns = new List<BuilderPawn>();
     private ArchitectPawn ArchitectPawn = null;
 
+    public GameObject[] spawnLocations;
+
 	void Start ()
     {
+        // Connected controllers
         bool[] connectedControllers = MP_Input.GetConnectedControllers();
 
+        // Create players
         for(int i = 0; i < connectedControllers.Length; i++)
         {
             if(connectedControllers[i])
@@ -31,6 +35,8 @@ public class Game : MonoBehaviour
                     newBuilderPawn.CreatePawn(device);
                     BuilderPawns.Add(newBuilderPawn);
                 }
+
+                newBuilder.transform.position = spawnLocations[i].transform.position;
             }
         }
 	}
