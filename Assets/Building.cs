@@ -35,7 +35,7 @@ public class Building : MonoBehaviour
     {
         CurrentBuildingState = BuildingState.Finished;
 
-        // TODO: Shader swap, possible animations.
+        this.renderer.material.shader = Shader.Find("Custom/Illustrative");
     }
 
     public virtual bool AddResource(HarvestableResource aResource)
