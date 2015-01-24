@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: c67618b76b0d7d548ae93093de407f40
+ShaderImporter:
+  defaultTextures:
+  - _DiffuseWarp: {fileID: 2800000, guid: 08122eb07e633ec40bc38ca05855cf8a, type: 3}
+  - _SpecWarp: {fileID: 2800000, guid: dc4ef4a5398d2e249ba61788109631de, type: 3}
+  - _IBLDiffuseCube: {fileID: 8900000, guid: 8519c16b1106e24419e3d5a9e64c422e, type: 3}
+  - _DiffuseMap: {instanceID: 0}
+  - _NormalMap: {instanceID: 0}
+  - _SpecMap: {instanceID: 0}
+  - _BlendDiffuseMap: {instanceID: 0}
+  - _BlendNormalMap: {instanceID: 0}
+  - _BlendSpecMap: {instanceID: 0}
+  userData: 
