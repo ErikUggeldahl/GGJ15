@@ -29,6 +29,7 @@ public class BuilderPawn : MonoBehaviour, IHealth
     public float MovementPenaltyPercent { get { return movementPenaltyPercent; } }
 
     public List<HarvestableResource> NearbyResources = new List<HarvestableResource>();
+    public List<Building> NearbyBuildings = new List<Building>();
 
     private HarvestableResource currentHeldResource = null;
     public HarvestableResource CurrentHeldResource
@@ -100,13 +101,13 @@ public class BuilderPawn : MonoBehaviour, IHealth
                     float smallestDistance = Vector3.Distance(nearestResource.transform.position, this.transform.position);
                     float nextDistance = Vector3.Distance(NearbyResources[i].transform.position, this.transform.position);
 
-                    if (nextDistance < smallestDistance)
+                    if (nextDistance < smallestDistance && !nearestResource.IsHeld)
                     {
                         nearestResource = NearbyResources[i];
                     }
                 }
 
-                if (nearestResource != null && !nearestResource.IsHeld)
+                if (nearestResource != null)
                 {
                     nearestResource.Pickup(this);
                     CurrentHeldResource = nearestResource;
@@ -119,8 +120,38 @@ public class BuilderPawn : MonoBehaviour, IHealth
     {
         if (IsHoldingItem)
         {
-            CurrentHeldResource.Drop();
-            CurrentHeldResource = null;
+            if (NearbyBuildings.Count > 0)
+            {
+                Building nearestBuilding = NearbyBuildings[0];
+
+                for (int i = 1; i < NearbyBuildings.Count; i++)
+                {
+                    float smallestDistance = Vector3.Distance(nearestBuilding.transform.position, this.transform.position);
+                    float nextDistance = Vector3.Distance(NearbyResources[i].transform.position, this.transform.position);
+
+                    if (nextDistance < smallestDistance && nearestBuilding.CurrentBuildingState == Building.BuildingState.UnderConstruction)
+                    {
+                        nearestBuilding = NearbyBuildings[i];
+                    }
+                }
+
+                if (nearestBuilding != null)
+                {
+                    NearbyResources.Remove(CurrentHeldResource);
+                    nearestBuilding.AddResource(CurrentHeldResource);
+                    CurrentHeldResource = null;
+                }
+                else
+                {
+                    CurrentHeldResource.Drop();
+                    CurrentHeldResource = null;
+                }
+            }
+            else
+            {
+                CurrentHeldResource.Drop();
+                CurrentHeldResource = null;
+            }
         }
     }
 

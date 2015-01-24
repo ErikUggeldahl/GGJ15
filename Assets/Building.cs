@@ -14,13 +14,13 @@ public class Building : MonoBehaviour
     public int WoodRequired;
     public int StoneRequired;
 
-    private int currentWood = 0;
+    public int currentWood = 0;
     public int CurrentWood { get { return currentWood; } }
 
-    private int currentStone = 0;
+    public int currentStone = 0;
     public int CurrentStone { get { return currentStone; } }
-	
-    void Update()
+
+    protected virtual void Update()
     {
         if (CurrentBuildingState == BuildingState.UnderConstruction)
         {
@@ -31,14 +31,14 @@ public class Building : MonoBehaviour
         }
     }
 
-    private void ConstructBuilding()
+    protected virtual void ConstructBuilding()
     {
         CurrentBuildingState = BuildingState.Finished;
 
         // TODO: Shader swap, possible animations.
     }
 
-	public bool AddResource(HarvestableResource aResource)
+    public virtual bool AddResource(HarvestableResource aResource)
     {
         if(aResource.gameObject.GetComponent<Tree>() != null)
         {
@@ -71,6 +71,26 @@ public class Building : MonoBehaviour
         else
         {
             return false;
+        }
+    }
+
+    protected virtual void OnTriggerEnter(Collider aCollider)
+    {
+        if (aCollider.gameObject.GetComponent<BuilderPawn>() != null)
+        {
+            BuilderPawn builderPawn = aCollider.gameObject.GetComponent<BuilderPawn>();
+
+            builderPawn.NearbyBuildings.Add(this);
+        }
+    }
+
+    protected virtual void OnTriggerExit(Collider aCollider)
+    {
+        if (aCollider.gameObject.GetComponent<BuilderPawn>() != null)
+        {
+            BuilderPawn builderPawn = aCollider.gameObject.GetComponent<BuilderPawn>();
+
+            builderPawn.NearbyBuildings.Remove(this);
         }
     }
 }
