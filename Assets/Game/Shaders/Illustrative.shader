@@ -1,7 +1,7 @@
 ﻿// unity IBL
 // http://jordanmellow.com/news.php?extend.17
 
-Shader "Illustrative" 
+Shader "Custom/Illustrative" 
 {
 	Properties
     {
