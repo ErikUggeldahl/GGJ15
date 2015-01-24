@@ -12,6 +12,8 @@ public class Tower : Building
 
 	GameObject FindTarget()
 	{
+
+
         return null;
 	}
 
@@ -23,10 +25,10 @@ public class Tower : Building
 
 	void OrientTurret()
 	{
-		if (TurretObject == null)
+		if (TurretObject == null || Target == null)
 			return;
 
-		Vector3 lookDirection = transform.position - TurretObject.position;
+        Vector3 lookDirection = transform.position - Target.position;
 		lookDirection.y = 0;
 
 		TurretObject.transform.rotation = Quaternion.LookRotation (lookDirection);
