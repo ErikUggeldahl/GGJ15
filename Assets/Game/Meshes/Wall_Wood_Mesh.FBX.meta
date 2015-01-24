@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: c99ab68745b60c94da7d2ca9db551e81
+guid: 8be91b7a5f36f8c48bc0226dc894076d
 ModelImporter:
   serializedVersion: 16
   fileIDToRecycleName:
@@ -7,8 +7,7 @@ ModelImporter:
     400000: //RootNode
     2300000: //RootNode
     3300000: //RootNode
-    4300000: Rock_Mesh
-    4300002: Wall_Rock
+    4300000: Wall_Wood
     9500000: //RootNode
   materials:
     importMaterials: 1
