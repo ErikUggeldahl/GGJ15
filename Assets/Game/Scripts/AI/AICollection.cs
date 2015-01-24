@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public class AICollection : BaseHealth
+public class AICollection
 {
     private static AICollection instance;
     public static AICollection Instance { get { return instance; } }
