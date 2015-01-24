@@ -11,7 +11,6 @@ public class Game : MonoBehaviour
     public enum GameState
     {
         PreGame,
-        Countdown,
         Game,
         Win,
         GameOver
