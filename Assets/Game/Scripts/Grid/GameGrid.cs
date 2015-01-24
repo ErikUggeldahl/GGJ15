@@ -54,6 +54,7 @@ public class GameGrid : MonoBehaviour
     {
         instance = this;
         CreateGrid();
+        CreateGridCollider();
         PopulateResources();
         Shader.SetGlobalFloat("_ClearingRadius", clearingRadius);
     }
@@ -68,6 +69,9 @@ public class GameGrid : MonoBehaviour
 
     void CreateGrid()
     {
+        var groundLayer = LayerMask.NameToLayer("Ground");
+        GridSquare.GroundLayer = groundLayer;
+
         gridSquares = new GridSquare[gridSizeX,gridSizeY];
 
         for (int y = 0; y < gridSizeY; y++)
@@ -82,6 +86,18 @@ public class GameGrid : MonoBehaviour
                 gridSquares[x, y] = newSquare;
             }
         }
+    }
+
+    void CreateGridCollider()
+    {
+        GameObject gridCollider = new GameObject("Grid collider");
+        var groundLayer = LayerMask.NameToLayer("Ground");
+        gridCollider.layer = groundLayer;
+        gridCollider.transform.SetParent(this.transform);
+
+        var boxCollider = gridCollider.AddComponent<BoxCollider>();
+        boxCollider.size = new Vector3(100f, 1f, 100f);
+        boxCollider.center = new Vector3(-0.5f, -0.5f, -0.5f);
     }
 
     void PopulateResources()
@@ -100,6 +116,8 @@ public class GameGrid : MonoBehaviour
 
     void PopulateRocks()
     {
+        var rockParent = new GameObject("Rock parent").transform;
+
         for (int i = 0; i < RockCount; i++)
         {
             GridPosition newPosition;
@@ -109,12 +127,16 @@ public class GameGrid : MonoBehaviour
             }
             while (IsInClearing(newPosition) || GetGridSquare(newPosition) == null || GetGridSquare(newPosition).ResidingObject != null);
 
-            GetGridSquare(newPosition).ResidingObject = (Instantiate(RockPrefab, GridToWorldSpace(newPosition), Quaternion.identity) as Rock).gameObject;
+            var rockGO = (Instantiate(RockPrefab, GridToWorldSpace(newPosition), Quaternion.identity) as Rock).gameObject;
+            rockGO.transform.parent = rockParent;
+            GetGridSquare(newPosition).ResidingObject = rockGO;
         }
     }
 
     void PopulateTrees()
     {
+        var treeParent = new GameObject("Tree parent").transform;
+
         for (int i = 0; i < TreeClusters; i++)
         {
             GridPosition clusterPosition;
@@ -139,6 +161,7 @@ public class GameGrid : MonoBehaviour
                 while (IsInClearing(spawnPosition) || GetGridSquare(spawnPosition) == null || GetGridSquare(spawnPosition).ResidingObject != null);
 
                 Tree newTree = Instantiate(TreePrefab, GridToWorldSpace(spawnPosition), Quaternion.identity) as Tree;
+                newTree.transform.parent = treeParent;
                 GetGridSquare(spawnPosition).ResidingObject = newTree.gameObject;
             }
         }
