@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 using MPInput;
 
-public class BuilderPawn : MonoBehaviour
+public class BuilderPawn : MonoBehaviour, IHealth
 {
     public float MovementDrag = 2.0f;
     public float MovementForce = 20.0f;
@@ -15,6 +15,9 @@ public class BuilderPawn : MonoBehaviour
 
     private bool isHoldingItem = false;
     public bool IsHoldingItem { get { return isHoldingItem; } }
+
+    private bool isDead = false;
+    public bool IsDead { get { return isDead; } }
 
     // Penalty from 0.0f - 1.0f (1% to 100%)
     public float movementPenaltyPercent = 0;
@@ -37,6 +40,9 @@ public class BuilderPawn : MonoBehaviour
             return currentHeldResource;
         }
     }
+
+    private int health = 0;
+    public int Health { set { health = value; } get { return health; } }
 
     void Update()
     {
@@ -90,5 +96,28 @@ public class BuilderPawn : MonoBehaviour
     {
         CurrentHeldResource.Drop();
         CurrentHeldResource = null;
+    }
+
+    public void TakeDamage(int aDamage)
+    {
+        if (!IsDead)
+        {
+            Health -= aDamage;
+
+            if (Health <= 0)
+            {
+                Die();
+            }
+        }
+    }
+
+    public void Die()
+    {
+        isDead = true;
+    }
+
+    public void Respawn()
+    {
+        isDead = false;
     }
 }

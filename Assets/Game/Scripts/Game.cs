@@ -8,6 +8,18 @@ public class Game : MonoBehaviour
 {
     public static Game Instance;
 
+    public enum GameState
+    {
+        PreGame,
+        Countdown,
+        Wave,
+        WaveEnd,
+        Win,
+        GameOver
+    }
+
+    public GameState CurrentGameState = GameState.PreGame;
+
     public GameObject BuilderPrefab;
     public GameObject ArchitectPrefab;
 
@@ -49,4 +61,12 @@ public class Game : MonoBehaviour
             }
         }
 	}
+
+    void Update()
+    {
+        if(ArchitectPawn.IsDead)
+        {
+            CurrentGameState = GameState.GameOver;
+        }
+    }
 }
