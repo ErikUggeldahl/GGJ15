@@ -9,6 +9,9 @@ public class StunAbility : MonoBehaviour
 
     private bool isStunning = true;
 
+    [SerializeField]
+    GameObject IceCubeObj;
+
 	[SerializeField]
 	float Duration;
 
@@ -60,6 +63,20 @@ public class StunAbility : MonoBehaviour
         if (aiMovement == null)
             return;
 
-		aiMovement.StartStun(Duration, SlowFactor);
+        aiMovement.StartStun(Duration, SlowFactor);
+
+        CreateIceCube(hitInfo.transform.position);
+    }
+
+    void CreateIceCube(Vector3 location)
+    {
+        var randomRotation = Quaternion.AngleAxis(Random.value * 360f, Vector3.up);
+        
+        var iceCubeGO = ((GameObject)Instantiate(IceCubeObj, location, randomRotation));
+        var groundSnap = new Vector3(iceCubeGO.transform.position.x, 0f, iceCubeGO.transform.position.z);
+        iceCubeGO.transform.position = groundSnap;
+
+        var selfDestruct = iceCubeGO.GetComponent<SelfDestruct>();
+        selfDestruct.StartSelfDestruct(Duration);
     }
 }
