@@ -3,6 +3,10 @@ using System.Collections;
 
 public class HarvestableResource : MonoBehaviour 
 {
+	public bool randomRotation = true;
+	public float sizeVariance = 0.2f;
+
+
     protected bool isHeld = false;
     public bool IsHeld { get { return isHeld; } }
 
@@ -21,6 +25,14 @@ public class HarvestableResource : MonoBehaviour
             return currentOwner;
         }
     }
+
+	void Start()
+	{
+		float newScale = Random.Range(1.0f - (sizeVariance/2),1.0f + (sizeVariance/2));
+		transform.localScale = Vector3.one * newScale;
+		if (randomRotation)
+			transform.Rotate(Vector3.up,Random.Range(0.0f,360.0f));
+	}
 
     void Update()
     {

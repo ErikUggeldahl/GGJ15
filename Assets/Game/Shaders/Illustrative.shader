@@ -25,7 +25,7 @@ Shader "Illustrative"
         _SpecColor ("Specular Color", Color) = (0.5, 0.5, 0.5, 1)
         _SpecularMultiply ("Specular Brightness",float) = 0.1
         _SpecAdd ("Specular Boost", float) = 0
-        _SpecMap ("Specular Map (RGB)", 2D) = "grey" {}    
+        _SpecMap ("Specular Map (RGB)", 2D) = "white" {}    
         _Gloss ("Specular Glossiness", float) = 20
          
         _FresnelPower ("Fresnel Power",float) = 1.0
@@ -63,7 +63,6 @@ Shader "Illustrative"
         #pragma multi_compile SPECULAR_ON SPECULAR_OFF
         //#pragma multi_compile FRESNEL_ON FRESNEL_OFF
         #pragma multi_compile RIMLIGHT_ON RIMLIGHT_OFF
-        #pragma multi_compile VERTEXBLEND_ON VERTEXBLEND_OFF
         
         //--------------------------------------------------------
         //--------------------- Lighting Variables ---------------
@@ -170,64 +169,36 @@ Shader "Illustrative"
             float3 viewDir;
             #endif
             
-            #if VERTEXBLEND_ON
             float4 color : COLOR;
-            #endif
             
             INTERNAL_DATA
 		};
 
 		void surf (Input IN, inout Ill_SurfaceOutput o) 
-		{	
-			#if VERTEXBLEND_ON
-			float texBlend = 1 - clamp(IN.color.r,0,1);
-            #endif	
+		{
 			
 			
 			float4 diffuseMapCol = tex2D (_DiffuseMap, IN.uv_DiffuseMap);
 			float AmbientOcclusion1 =  ((1-_AmbientOcclusionIntensity) + (diffuseMapCol.a * _AmbientOcclusionIntensity));
-			float3 Diff1 = _DiffuseMultiply * _DiffuseColor.rgb * diffuseMapCol.rgb;
-			#if VERTEXBLEND_ON
-			float4 diffuseMapCol2 = tex2D (_BlendDiffuseMap, IN.uv_DiffuseMap);
-			float AmbientOcclusion2 =  ((1-_BlendAmbientOcclusionIntensity) + (diffuseMapCol2.a * _BlendAmbientOcclusionIntensity));
-			float3 Diff2 = _BlendDiffuseMultiply * _BlendDiffuseColor.rgb * diffuseMapCol2.rgb;
+			float3 Diff1 = _DiffuseMultiply * _DiffuseColor.rgb * diffuseMapCol.rgb * IN.color;
 			
-			o.Albedo.rgb = lerp(Diff1,Diff2,texBlend);
-			float AmbientOcclusion = lerp(AmbientOcclusion1,AmbientOcclusion2,texBlend);
-			#else
 			o.Albedo.rgb = Diff1;
 			float desaturatedAlbedo = (o.Albedo.r + o.Albedo.g + o.Albedo.b)/3;
 			o.Albedo.rgb = lerp(o.Albedo,float3(desaturatedAlbedo,desaturatedAlbedo,desaturatedAlbedo),_Desaturate);
 			float AmbientOcclusion = AmbientOcclusion1;
-            #endif
              
             #if SPECULAR_ON
             float Gloss1 = _Gloss;
             float3 Spec1 = _SpecAdd + _SpecularMultiply * tex2D (_SpecMap, IN.uv_DiffuseMap);
-	            #if VERTEXBLEND_ON
-	            float Gloss2 = _BlendGloss;
-	            float3 Spec2 = _BlendSpecAdd + _BlendSpecularMultiply * tex2D (_BlendSpecMap, IN.uv_DiffuseMap);
-	            
-	            o.Gloss = lerp(Gloss1,Gloss2,texBlend);
-	            o.Specular = lerp(Spec1,Spec2,texBlend);
-	            #else
-	            o.Specular = Spec1;
-	            o.Gloss = Gloss1;
-	            #endif
+            o.Specular = Spec1;
+            o.Gloss = Gloss1;
             #endif
              
             #if NORMALMAP_ON
             float3 Normal1 = UnpackNormal(tex2D(_NormalMap, IN.uv_DiffuseMap));
             //Normal1.z *= 1/_NormalIntensity;
             Normal1 = normalize(Normal1);
-            #if VERTEXBLEND_ON
-            float3 Normal2 = UnpackNormal(tex2D(_BlendNormalMap, IN.uv_DiffuseMap));
-            Normal2 = normalize(Normal2);
-            o.Normal = lerp(Normal1,Normal2,texBlend);
-            o.Normal = normalize(o.Normal);
-            #else
             o.Normal = Normal1;
-            #endif
             #endif
             
             #if NORMALMAP_ON
