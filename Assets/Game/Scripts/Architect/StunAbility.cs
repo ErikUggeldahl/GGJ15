@@ -10,10 +10,10 @@ public class StunAbility : MonoBehaviour
     private bool isStunning = true;
 
 	[SerializeField]
-	float stunDuration;
+	float Duration;
 
 	[SerializeField]
-	float slowdownPourcentage;
+	float SlowFactor;
 
     void Start()
     {
@@ -60,6 +60,6 @@ public class StunAbility : MonoBehaviour
         if (aiMovement == null)
             return;
 
-		aiMovement.Stun(2f, 0.1f);
+		aiMovement.Stun(Duration, SlowFactor);
     }
 }
