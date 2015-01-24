@@ -11,7 +11,7 @@ public class AIHealth : BaseHealth {
 
 	protected override void  Die()
 	{
-		base.Die ();
-		Destroy (gameObject);
+		base.Die();
+		Destroy(gameObject);
 	}
 }

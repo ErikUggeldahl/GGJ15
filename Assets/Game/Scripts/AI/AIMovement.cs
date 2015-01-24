@@ -20,6 +20,7 @@ public class AIMovement : MonoBehaviour
 
 	float defaultdrag;
 	float defaultAngularDrag;
+
 	public float defaultMaxSpeed;
 	float maxSpeed;
 	
