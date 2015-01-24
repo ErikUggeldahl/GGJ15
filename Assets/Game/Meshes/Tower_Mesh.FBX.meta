@@ -6,17 +6,27 @@ ModelImporter:
     100000: //RootNode
     100002: Object060
     100004: Wall_Rock
+    100006: Turrent_Base
+    100008: Turret
     400000: //RootNode
     400002: Object060
     400004: Wall_Rock
+    400006: Turrent_Base
+    400008: Turret
     2300000: //RootNode
     2300002: Object060
     2300004: Wall_Rock
+    2300006: Turrent_Base
+    2300008: Turret
     3300000: //RootNode
     3300002: Object060
     3300004: Wall_Rock
+    3300006: Turrent_Base
+    3300008: Turret
     4300000: Wall_Rock
     4300002: Object060
+    4300004: Turrent_Base
+    4300006: Turret
     9500000: //RootNode
   materials:
     importMaterials: 1

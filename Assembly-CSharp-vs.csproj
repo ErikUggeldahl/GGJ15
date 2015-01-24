@@ -46,9 +46,11 @@
 	</Reference>
   </ItemGroup>
   <ItemGroup>
+     <Compile Include="Assets\Building.cs" />
      <Compile Include="Assets\Game\Scripts\AIInteraction.cs" />
      <Compile Include="Assets\Game\Scripts\AIMovement.cs" />
      <Compile Include="Assets\Game\Scripts\Architect\BuildingPlacer.cs" />
+     <Compile Include="Assets\Game\Scripts\Architect\StunAbility.cs" />
      <Compile Include="Assets\Game\Scripts\ArchitectPawn.cs" />
      <Compile Include="Assets\Game\Scripts\BuilderInput.cs" />
      <Compile Include="Assets\Game\Scripts\BuilderPawn.cs" />
@@ -68,6 +70,8 @@
      <Compile Include="Assets\Game\Shaders\AmbientSettings.cs" />
      <Compile Include="Assets\MP_Input\MP_Input.cs" />
      <Compile Include="Assets\MP_Input\MP_InputConfig.cs" />
+     <Compile Include="Assets\Tower.cs" />
+     <Compile Include="Assets\Wall.cs" />
      <None Include="Assets\Standard Assets\Image Effects (Pro Only)\_Sources\Shaders\_BloomAndFlares\BlendOneOne.shader" />
      <None Include="Assets\Standard Assets\Image Effects (Pro Only)\_Sources\Shaders\NoiseEffectShaderRGB.shader" />
      <None Include="Assets\Standard Assets\Image Effects (Pro Only)\_Sources\Shaders\_DepthOfField\SeparableWeightedBlurDof34.shader" />
