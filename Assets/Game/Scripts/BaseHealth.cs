@@ -43,11 +43,4 @@ public class BaseHealth : MonoBehaviour
 		Debug.Log(gameObject.name + " is dead");
 		IsAlive = false;
 	}
-
-
-	// Use this for initialization
-	void Start () 
-	{
-
-	}
 }

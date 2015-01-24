@@ -16,13 +16,4 @@ public class BuilderHealth : BaseHealth {
     {
         pawn = aPawn;
     }
-
-    protected override void Die()
-    {
-        base.Die();
-
-        //pawn.
-    }
-	
-
 }

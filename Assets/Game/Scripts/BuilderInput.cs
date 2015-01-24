@@ -39,39 +39,42 @@ public class BuilderInput : MonoBehaviour
 
     public void FixedUpdate()
     {
-        // ** Commit actions based on input ** //
-        
-        // Movement
-        Vector3 moveDirection = new Vector3(xAxisMove, 0, yAxisMove).normalized;
-        Vector3 moveForce = (moveDirection * pawn.MovementForce) * (1.0f - pawn.MovementPenaltyPercent);
-        this.gameObject.rigidbody.drag = pawn.MovementDrag;
-        this.gameObject.rigidbody.AddForce(moveForce);
-
-        // Aiming
-        Vector3 targetLookDirection = new Vector3(xAxisLook, 0, yAxisLook).normalized;
-        Vector3 currentLookDirection = Vector3.RotateTowards(this.transform.forward, targetLookDirection, pawn.LookForce * Time.fixedDeltaTime, 0.0f);
-        this.gameObject.transform.rotation = Quaternion.LookRotation(currentLookDirection);
-
-        // Buttons
-        if(isPickupButtonPressed)
+        if (pawn.BuilderHealthScript.IsAlive)
         {
-            if(pawn.IsHoldingItem)
+            // ** Commit actions based on input ** //
+
+            // Movement
+            Vector3 moveDirection = new Vector3(xAxisMove, 0, yAxisMove).normalized;
+            Vector3 moveForce = (moveDirection * pawn.MovementForce) * (1.0f - pawn.MovementPenaltyPercent);
+            this.gameObject.rigidbody.drag = pawn.MovementDrag;
+            this.gameObject.rigidbody.AddForce(moveForce);
+
+            // Aiming
+            Vector3 targetLookDirection = new Vector3(xAxisLook, 0, yAxisLook).normalized;
+            Vector3 currentLookDirection = Vector3.RotateTowards(this.transform.forward, targetLookDirection, pawn.LookForce * Time.fixedDeltaTime, 0.0f);
+            this.gameObject.transform.rotation = Quaternion.LookRotation(currentLookDirection);
+
+            // Buttons
+            if (isPickupButtonPressed)
             {
-                pawn.DropItem();
+                if (pawn.IsHoldingItem)
+                {
+                    pawn.DropItem();
+                }
+                else
+                {
+                    pawn.PickupItem();
+                }
+            }
+
+            if (isFireButtonPressed)
+            {
+                pawn.Fire();
             }
             else
             {
-                pawn.PickupItem();
+                pawn.CeaseFire();
             }
-        }
-
-        if (isFireButtonPressed)
-        {
-            pawn.Fire();
-        }
-        else
-        {
-            pawn.CeaseFire();
         }
     }
 }

@@ -21,9 +21,6 @@ public class BuilderPawn : MonoBehaviour
     private bool isHoldingItem = false;
     public bool IsHoldingItem { get { return isHoldingItem; } }
 
-    private bool isDead = false;
-    public bool IsDead { get { return isDead; } }
-
     private bool isFiring = false;
     public bool IsFiring { get { return isFiring; } }
 
