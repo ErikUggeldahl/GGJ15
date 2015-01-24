@@ -21,7 +21,59 @@
 		LOD 200
 		
 		CGPROGRAM
-		#pragma surface surf Lambert
+		#pragma surface surf Illustrative
+
+//--------------------------------------------------------
+        //--------------------- Lighting Variables ---------------
+        //--------------------------------------------------------
+        
+        sampler2D _DiffuseWarp;
+        sampler2D _SpecWarp;
+        samplerCUBE _IBLDiffuseCube;
+        float _AmbientIntensity;
+        
+        
+		
+		//---------------------------------------------------------
+		//--------------------- Lighting --------------------------
+		//---------------------------------------------------------
+		struct Ill_SurfaceOutput
+		{
+			fixed3 Albedo;
+			fixed3 Normal;
+			fixed3 Emission;
+			fixed3 Specular;
+			fixed Gloss;
+			fixed Alpha;
+		};
+		
+		half4 LightingIllustrative (Ill_SurfaceOutput s, half3 lightDir, half3 viewDir, half atten)
+		{
+			// Calculate diffuse
+			fixed halfLambert = max (0, dot (s.Normal, lightDir));
+			fixed diffuseValue = (dot (s.Normal, lightDir) * 0.5) + 0.5;
+			half3 warpedDiffuse = tex2D(_DiffuseWarp, half2(diffuseValue,0.5));
+			
+			
+			// Gaussian Specular
+			half3 halfway = normalize (lightDir + viewDir);
+			half Dot = saturate(dot(s.Normal, halfway));
+			half Threshold = 0.04;
+			half CosAngle = pow (Threshold, 1 / (s.Gloss*2));
+			half NormAngle = (Dot -1) / (CosAngle -1);
+			half spec = exp(- NormAngle * NormAngle ) * halfLambert;
+			//half3 warpedSpec = tex2D(_SpecWarp, half2(clamp(spec,0,1),0.5));
+			half3 warpedSpec = spec;
+			half3 specFinal = warpedSpec * s.Specular * _LightColor0.rgb * clamp(diffuseValue * 4,0,1) ;
+			
+			
+			fixed4 c;			
+			// Combine diffuse and specular
+			c.rgb = (s.Albedo * warpedDiffuse * 2 * _LightColor0.rgb + specFinal)* atten;	
+			//c.rgb = (s.Albedo * diffuseValue * 2 * _LightColor0.rgb + spec * s.Specular * _LightColor0.rgb )* atten;				
+			c.a = s.Alpha;	
+			return c;
+		}
 
 		sampler2D _MainTex;
 
@@ -47,7 +99,7 @@
 			float2 uv_GrassTex;
 		};
 
-		void surf (Input IN, inout SurfaceOutput o) 
+		void surf (Input IN, inout Ill_SurfaceOutput o) 
 		{
 			float2 gridUV = (IN.worldPos.xz + 0.5f) / _NormalMapScale;
 
@@ -62,9 +114,7 @@
 
 			float blend = distanceFromCenter - _ClearingRadius + blendRadius;
 			blend /= blendRadius;
-			blend = clamp(blend + (blendModulate - 0.5f),0,1);
-
-			
+			blend = clamp(blend + (blendModulate - 0.5f),0,1);			
 
 			o.Albedo = lerp(dirt.rgb,grass.rgb,blend);
 		}
