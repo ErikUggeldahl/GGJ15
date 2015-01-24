@@ -32,9 +32,9 @@ public class BuilderInput : MonoBehaviour
         yAxisMove = MP_Input.GetAxis("MoveVertical", inputDeviceInfo);
         xAxisLook = MP_Input.GetAxis("AimHorizontal", inputDeviceInfo);
         yAxisLook = MP_Input.GetAxis("AimVertical", inputDeviceInfo);
-
-        isPickupButtonPressed = MP_Input.GetButtonDown("BuilderFire", inputDeviceInfo);
-        isFireButtonPressed = MP_Input.GetButtonDown("Pickup/Drop", inputDeviceInfo);
+        
+        isFireButtonPressed = MP_Input.GetButtonDown("BuilderFire", inputDeviceInfo);
+        isPickupButtonPressed = MP_Input.GetButtonDown("Pickup/Drop", inputDeviceInfo);
     }
 
     public void FixedUpdate()

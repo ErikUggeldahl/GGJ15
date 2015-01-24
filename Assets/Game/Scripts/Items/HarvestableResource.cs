@@ -34,9 +34,9 @@ public class HarvestableResource : MonoBehaviour
 
     protected virtual void OnTriggerEnter(Collider aCollider)
     {
-        if(collider.gameObject.GetComponent<BuilderPawn>() != null)
+        if (aCollider.gameObject.GetComponent<BuilderPawn>() != null)
         {
-            BuilderPawn builderPawn = collider.gameObject.GetComponent<BuilderPawn>();
+            BuilderPawn builderPawn = aCollider.gameObject.GetComponent<BuilderPawn>();
 
             builderPawn.NearbyResources.Add(this);
         }
@@ -44,9 +44,9 @@ public class HarvestableResource : MonoBehaviour
 
     protected virtual void OnTriggerExit(Collider aCollider)
     {
-        if (collider.gameObject.GetComponent<BuilderPawn>() != null)
+        if (aCollider.gameObject.GetComponent<BuilderPawn>() != null)
         {
-            BuilderPawn builderPawn = collider.gameObject.GetComponent<BuilderPawn>();
+            BuilderPawn builderPawn = aCollider.gameObject.GetComponent<BuilderPawn>();
 
             builderPawn.NearbyResources.Remove(this);
         }

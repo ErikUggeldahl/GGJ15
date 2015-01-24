@@ -108,7 +108,7 @@ namespace MPInput
         public const string CONFIG_DIRECTORY = "Assets/MP_Input/Resources/";
         public const string CONFIG_FILENAME = "MP_InputConfig";
         const float CHECK_FOR_CONNECTED_CONTROLLER_INTERVAL = 1.0f;
-        const bool DEBUG_INPUT = true;
+        const bool DEBUG_INPUT = false;
         const float AXIS_DEADZONE = 0.2f;
 
         static MP_Input instance = null;

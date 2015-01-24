@@ -17,7 +17,7 @@ public class BuilderPawn : MonoBehaviour
     public bool IsHoldingItem { get { return isHoldingItem; } }
 
     // Penalty from 0.0f - 1.0f (1% to 100%)
-    private float movementPenaltyPercent = 0;
+    public float movementPenaltyPercent = 0;
     public float MovementPenaltyPercent { get { return movementPenaltyPercent; } }
 
     public List<HarvestableResource> NearbyResources = new List<HarvestableResource>();
@@ -81,6 +81,7 @@ public class BuilderPawn : MonoBehaviour
             if(nearestResource != null)
             {
                 nearestResource.Pickup(this);
+                CurrentHeldResource = nearestResource;
             }
         }
     }
