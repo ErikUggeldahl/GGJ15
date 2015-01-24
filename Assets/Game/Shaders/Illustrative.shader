@@ -189,7 +189,7 @@ Shader "Illustrative"
              
             #if SPECULAR_ON
             float Gloss1 = _Gloss;
-            float3 Spec1 = _SpecAdd + _SpecularMultiply * tex2D (_SpecMap, IN.uv_DiffuseMap);
+            float3 Spec1 = _SpecAdd + _SpecularMultiply * tex2D (_SpecMap, IN.uv_DiffuseMap) * _SpecColor;
             o.Specular = Spec1;
             o.Gloss = Gloss1;
             #endif

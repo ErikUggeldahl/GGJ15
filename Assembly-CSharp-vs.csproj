@@ -48,6 +48,7 @@
   <ItemGroup>
      <Compile Include="Assets\Game\Scripts\AIInteraction.cs" />
      <Compile Include="Assets\Game\Scripts\AIMovement.cs" />
+     <Compile Include="Assets\Game\Scripts\Architect\BuildingPlacer.cs" />
      <Compile Include="Assets\Game\Scripts\ArchitectPawn.cs" />
      <Compile Include="Assets\Game\Scripts\BuilderInput.cs" />
      <Compile Include="Assets\Game\Scripts\BuilderPawn.cs" />
@@ -55,7 +56,7 @@
      <Compile Include="Assets\Game\Scripts\Game.cs" />
      <Compile Include="Assets\Game\Scripts\Grid\GameGrid.cs" />
      <Compile Include="Assets\Game\Scripts\Grid\GridSquare.cs" />
-     <Compile Include="Assets\Game\Scripts\Health.cs" />
+     <Compile Include="Assets\Game\Scripts\IHealth.cs" />
      <Compile Include="Assets\Game\Scripts\Items\HarvestableResource.cs" />
      <Compile Include="Assets\Game\Scripts\Items\Rock.cs" />
      <Compile Include="Assets\Game\Scripts\Items\Tree.cs" />
