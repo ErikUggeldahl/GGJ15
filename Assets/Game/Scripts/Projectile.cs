@@ -17,10 +17,10 @@ public class Projectile : MonoBehaviour
     public int MoveForce;
     public int DestroyDistance;
 
-    private DamageSource currentSource = DamageSource.None;
+    protected DamageSource currentSource = DamageSource.None;
     public DamageSource CurrentSource { get { return currentSource; } }
 
-    private MonoBehaviour sourceObject;
+    protected MonoBehaviour sourceObject;
     public MonoBehaviour SourceObject { get { return sourceObject; } }
 
     public void Initialize(DamageSource aSource, MonoBehaviour aSourceObject)
@@ -29,7 +29,7 @@ public class Projectile : MonoBehaviour
         sourceObject = aSourceObject;
     }
 
-    void Update()
+    protected virtual void Update()
     {
         if(Vector3.Distance(this.transform.position, sourceObject.transform.position) >= DestroyDistance)
         {
@@ -38,7 +38,7 @@ public class Projectile : MonoBehaviour
     }
 	
 	// Update is called once per frame
-	void FixedUpdate ()
+	protected virtual void FixedUpdate ()
     {
         this.gameObject.rigidbody.drag = Drag;
         this.gameObject.rigidbody.AddForce(this.transform.forward * MoveForce);

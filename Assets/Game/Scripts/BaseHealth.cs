@@ -3,7 +3,7 @@ using System.Collections;
 
 public class BaseHealth : MonoBehaviour 
 {
-	public int startingHP;
+	public int startingHP = 100;
 
 	int health;
 	public int Health
@@ -12,6 +12,7 @@ public class BaseHealth : MonoBehaviour
 		set 
 		{ 
 			health = value; 
+
 			if (Health <= 0 && isAlive)
 				Die();
 		}
