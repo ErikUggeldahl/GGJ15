@@ -1,6 +1,5 @@
 ﻿using UnityEngine;
 using System.Collections;
-using System.Collections.Generic;
 
 public class AISpawner : MonoBehaviour
 {
@@ -13,17 +12,14 @@ public class AISpawner : MonoBehaviour
     private const float SPAWN_TIMER = 10f;
     private float numberToSpawn = 1f;
     private const float SPAWN_ACCELERATION_FACTOR = 1.1f;
-    private int MAX_SPAWNS = 300;
+    public const int MAX_SPAWNS = 300;
 
     private Transform spawnParent;
-
-    private IList<GameObject> allSpawns;
-    public IEnumerable<GameObject> AllSpawns { get { return allSpawns; } }
 
     void Start()
     {
         spawnParent = new GameObject("Spawn Parent").transform;
-        allSpawns = new List<GameObject>(MAX_SPAWNS);
+        
 
         StartCoroutine(SpawnEnemies());
     }
@@ -32,13 +28,12 @@ public class AISpawner : MonoBehaviour
     {
         while (true)
         {
-            var spawnCount = Mathf.Min(MAX_SPAWNS - allSpawns.Count, numberToSpawn);
+            var spawnCount = Mathf.Min(MAX_SPAWNS - AICollection.Instance.SpawnCount, numberToSpawn);
 
             for (int i = 0; i < spawnCount; i++)
             {
                 var spawn = (GameObject)Instantiate(SpawnObj, RandomEdgeWorldPosition(), Quaternion.identity);
                 spawn.transform.SetParent(spawnParent);
-                allSpawns.Add(spawn);
             }
 
             numberToSpawn *= SPAWN_ACCELERATION_FACTOR;
