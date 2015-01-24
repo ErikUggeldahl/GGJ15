@@ -7,7 +7,13 @@ public class AISpawner : MonoBehaviour
     GameObject SpawnObj;
 
     private const float HALF_PI = Mathf.PI / 2f;
-    private const float WORLD_SIZE = 100f;
+    private float WORLD_SIZE
+    {
+        get
+        {
+            return (float)GameGrid.Instance.gridSizeX;
+        }
+    }
 
     private const float SPAWN_TIMER = 10f;
     private float numberToSpawn = 1f;

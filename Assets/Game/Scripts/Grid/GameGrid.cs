@@ -96,7 +96,7 @@ public class GameGrid : MonoBehaviour
         gridCollider.transform.SetParent(this.transform);
 
         var boxCollider = gridCollider.AddComponent<BoxCollider>();
-        boxCollider.size = new Vector3(100f, 1f, 100f);
+        boxCollider.size = new Vector3(1000f, 1f, 1000f);
         boxCollider.center = new Vector3(-0.5f, -0.5f, -0.5f);
     }
 
