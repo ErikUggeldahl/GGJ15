@@ -11,6 +11,9 @@ public class Building : MonoBehaviour
 
     public BuildingState CurrentBuildingState = BuildingState.UnderConstruction;
 
+    public Material UnderConstructionMaterial;
+    public Material FinishedMaterial;
+
     public int WoodRequired;
     public int StoneRequired;
 
@@ -35,7 +38,7 @@ public class Building : MonoBehaviour
     {
         CurrentBuildingState = BuildingState.Finished;
 
-        this.renderer.material.shader = Shader.Find("Custom/Illustrative");
+        this.renderer.material = FinishedMaterial;
     }
 
     public virtual bool AddResource(HarvestableResource aResource)
