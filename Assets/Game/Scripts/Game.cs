@@ -12,8 +12,7 @@ public class Game : MonoBehaviour
     {
         PreGame,
         Countdown,
-        Wave,
-        WaveEnd,
+        Game,
         Win,
         GameOver
     }

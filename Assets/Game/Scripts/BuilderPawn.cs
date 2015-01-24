@@ -6,6 +6,8 @@ using MPInput;
 
 public class BuilderPawn : MonoBehaviour, IHealth
 {
+    public GameObject SpearPrefab;
+
     public float MovementDrag = 2.0f;
     public float MovementForce = 20.0f;
     public float LookForce = 5.0f;
@@ -69,7 +71,7 @@ public class BuilderPawn : MonoBehaviour, IHealth
     {
         if (!IsHoldingItem)
         {
-            if (!IsFiring)
+            if (!IsFiring && !isFiringCoroutineActive)
             {
                 isFiring = true;
                 StartCoroutine(FiringCycle(1.5f));
@@ -145,15 +147,20 @@ public class BuilderPawn : MonoBehaviour, IHealth
         isDead = false;
     }
 
+    private bool isFiringCoroutineActive = false;
     private IEnumerator FiringCycle(float aWeaponFireAnimationTime)
     {
+        isFiringCoroutineActive = true;
+
         do
         {
-            // Fire projectile.
-            Debug.Log("Firing projectile");
+            GameObject projectile = GameObject.Instantiate(SpearPrefab, this.transform.position, this.transform.rotation) as GameObject;
+            projectile.GetComponent<Projectile>().Initialize(DamageSource.Builder, this);
 
             yield return new WaitForSeconds(aWeaponFireAnimationTime);
 
         } while (IsFiring == true);
+
+        isFiringCoroutineActive = false;
     }
 }
