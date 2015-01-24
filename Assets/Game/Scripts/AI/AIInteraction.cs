@@ -41,11 +41,13 @@ public class AIInteraction : MonoBehaviour {
 
 	void Update()
 	{
-		if (AIMovement.XZdistanceBetweenTwoVec3 (transform.position, movement.Target.position) < meleeAttackRange)
-			canAttack = true;
-		else
-			canAttack = false;
-
+		if (movement.Target != null) 
+		{
+			if (AIMovement.XZdistanceBetweenTwoVec3 (transform.position, movement.Target.position) < meleeAttackRange)
+				canAttack = true;
+			else
+				canAttack = false;
+		}
 		//Debug.Log ("attack is: " + canAttack);
 	}
 }

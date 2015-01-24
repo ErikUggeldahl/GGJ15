@@ -51,7 +51,7 @@ public class AIMovement : MonoBehaviour
 			{
 				transform.LookAt(new Vector3(target.position.x, transform.position.y, target.position.z));
 				if (rigidbody.velocity.magnitude < maxSpeed)
-					rigidbody.AddForce(transform.forward * movingSpeed, ForceMode.Acceleration );
+					rigidbody.AddForce(transform.forward * movingSpeed, ForceMode.VelocityChange );
 			}
 			yield return new WaitForFixedUpdate();
 		}

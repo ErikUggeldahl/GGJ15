@@ -26,8 +26,14 @@ public class TargetAssigner : MonoBehaviour {
 	// Use this for initialization
 	void Start ()
 	{
-		movement.Target = Game.Instance.architectSpawnLocation.transform;
+		StartCoroutine(WaitForArchitectToSpawn());
 		movement.OnMovementFinish += OnMovementDone;
+	}
+
+	IEnumerator WaitForArchitectToSpawn()
+	{
+		yield return new WaitForSeconds(1f);
+		movement.Target = Game.Instance.ArchitectPawn.transform;
 	}
 
 	void OnMovementDone(Transform target)
