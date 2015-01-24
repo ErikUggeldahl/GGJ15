@@ -101,10 +101,8 @@
 
 		void surf (Input IN, inout Ill_SurfaceOutput o) 
 		{
-			float2 gridUV = (IN.worldPos.xz + 0.5f) / _NormalMapScale;
-
-			o.Normal = UnpackNormal (tex2D (_NormalMap,gridUV));
-		
+			float2 gridUV = ((IN.worldPos.xz + 0.5f) / _NormalMapScale);
+					
 			half4 dirt = tex2D (_DirtTex, IN.worldPos.xz * _DirtTile) * _DirtColor;
 			half4 grass = tex2D (_GrassTex, IN.worldPos.xz * _GrassTile) * _GrassColor;
 			half4 blendModulate = tex2D (_BlendModulate, gridUV);
