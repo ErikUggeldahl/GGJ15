@@ -21,8 +21,8 @@ public class Game : MonoBehaviour
     public GameObject BuilderPrefab;
     public GameObject ArchitectPrefab;
 
-    private List<BuilderPawn> BuilderPawns = new List<BuilderPawn>();
-    private ArchitectPawn ArchitectPawn = null;
+    public List<BuilderPawn> BuilderPawns = new List<BuilderPawn>();
+    public ArchitectPawn ArchitectPawn = null;
 
     public GameObject architectSpawnLocation;
     public GameObject[] builderSpawnLocations;
