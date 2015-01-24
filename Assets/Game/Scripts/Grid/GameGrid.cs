@@ -29,7 +29,7 @@ public class GameGrid : MonoBehaviour
         }
     }
 
-    public float clearingSize = 40.0f;
+    public float clearingRadius = 20.0f;
 
     public float gridScale = 1;
 
@@ -55,6 +55,7 @@ public class GameGrid : MonoBehaviour
         instance = this;
         CreateGrid();
         PopulateResources();
+        Shader.SetGlobalFloat("_ClearingRadius", clearingRadius);
     }
 
     public GridSquare GetGridSquare(GridPosition aPosition)
@@ -72,7 +73,7 @@ public class GameGrid : MonoBehaviour
         for (int y = 0; y < gridSizeY; y++)
         {
             for (int x = 0; x < gridSizeX; x++)
-            {                
+            {
                 GameObject newSquareObj = new GameObject("GridSquare x" + x + " y" + y );
                 newSquareObj.transform.SetParent(this.transform);
 
@@ -89,6 +90,14 @@ public class GameGrid : MonoBehaviour
         PopulateTrees();
     }
 
+    bool IsInClearing(GridPosition aPosition)
+    {
+        Vector3 worldSpace = GridToWorldSpace(aPosition);
+        Vector3 center = GridToWorldSpace(new GridPosition(gridSizeX/2,gridSizeY/2));
+        float distance = (worldSpace - center).magnitude;
+        return distance < clearingRadius;
+    }
+
     void PopulateRocks()
     {
         for (int i = 0; i < RockCount; i++)
@@ -98,7 +107,7 @@ public class GameGrid : MonoBehaviour
             {
                 newPosition = new GridPosition(Random.Range(0, gridSizeX), Random.Range(0, gridSizeY));
             }
-            while (GetGridSquare(newPosition) != null && GetGridSquare(newPosition).ResidingObject != null);
+            while (IsInClearing(newPosition) || GetGridSquare(newPosition) == null || GetGridSquare(newPosition).ResidingObject != null);
 
             GetGridSquare(newPosition).ResidingObject = (Instantiate(RockPrefab, GridToWorldSpace(newPosition), Quaternion.identity) as Rock).gameObject;
         }
@@ -113,7 +122,7 @@ public class GameGrid : MonoBehaviour
             {
                 clusterPosition = new GridPosition(Random.Range(0, gridSizeX), Random.Range(0, gridSizeY));
             }
-            while (GetGridSquare(clusterPosition).ResidingObject != null);
+            while (IsInClearing(clusterPosition) || GetGridSquare(clusterPosition).ResidingObject != null);
 
             int ClusterSize = Random.Range(MinTreeClusterCount,MaxTreeClusterCount);
 
@@ -127,10 +136,9 @@ public class GameGrid : MonoBehaviour
                     spawnPosition = new GridPosition(Random.Range(-halfRadius, halfRadius), Random.Range(-halfRadius, halfRadius));
                     spawnPosition += clusterPosition;
                 }
-                while (GetGridSquare(spawnPosition) == null || GetGridSquare(spawnPosition).ResidingObject != null);
+                while (IsInClearing(spawnPosition) || GetGridSquare(spawnPosition) == null || GetGridSquare(spawnPosition).ResidingObject != null);
 
                 Tree newTree = Instantiate(TreePrefab, GridToWorldSpace(spawnPosition), Quaternion.identity) as Tree;
-                Debug.Log(GetGridSquare(spawnPosition));
                 GetGridSquare(spawnPosition).ResidingObject = newTree.gameObject;
             }
         }

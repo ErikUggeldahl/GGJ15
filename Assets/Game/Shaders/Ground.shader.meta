@@ -4,4 +4,5 @@ ShaderImporter:
   defaultTextures:
   - _DirtTex: {fileID: 2800000, guid: f79f1e985c8b31d418e47fb1b695569d, type: 3}
   - _GrassTex: {fileID: 2800000, guid: 6ec85943dcc0d134c83fef6d9f79c45a, type: 3}
+  - _BlendModulate: {fileID: 2800000, guid: 1e4f17461f4b04e409ccf3f013382824, type: 3}
   userData: 

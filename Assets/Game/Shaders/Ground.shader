@@ -7,6 +7,8 @@
 
 		_GrassTex ("Grass (RGB)", 2D) = "grey" {}
 		_GrassTile ("Grass Tile", float) = 1
+
+		_BlendModulate ("Grass (RGB)", 2D) = "grey" {}
 	}
 	SubShader 
 	{
@@ -18,11 +20,15 @@
 
 		sampler2D _MainTex;
 
+		float _ClearingRadius;
+
 		sampler2D _DirtTex;
 		float _DirtTile;
 
 		sampler2D _GrassTex;
 		float _GrassTile;
+
+		sampler2D _BlendModulate;
 
 		struct Input 
 		{
@@ -34,9 +40,18 @@
 		void surf (Input IN, inout SurfaceOutput o) 
 		{
 			half4 dirt = tex2D (_DirtTex, IN.worldPos.xz * _DirtTile);
-			half4 grass = tex2D (_GrassTex, IN.worldPos.xz * _GrassTile);			
+			half4 grass = tex2D (_GrassTex, IN.worldPos.xz * _GrassTile);
+			half4 blendModulate = tex2D (_BlendModulate, IN.worldPos.xz * _GrassTile);
 
-			o.Albedo = grass.rgb;
+			float distanceFromCenter = length(IN.worldPos);
+			float blendRadius = 3.0f;
+
+			float blend = distanceFromCenter - _ClearingRadius + blendRadius;
+			blend /= blendRadius;
+			blend = clamp(blend + (blendModulate - 0.5f),0,1);
+
+
+			o.Albedo = lerp(dirt.rgb,grass.rgb,blend);
 		}
 		ENDCG
 	} 
