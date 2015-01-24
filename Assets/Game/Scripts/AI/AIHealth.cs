@@ -8,4 +8,10 @@ public class AIHealth : BaseHealth {
 	{
 		SetStartingHP();
 	}
+
+	protected override void  Die()
+	{
+		base.Die ();
+		Destroy (gameObject);
+	}
 }

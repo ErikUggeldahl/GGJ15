@@ -9,6 +9,12 @@ public class StunAbility : MonoBehaviour
 
     private bool isStunning = true;
 
+	[SerializeField]
+	float stunDuration;
+
+	[SerializeField]
+	float slowdownPourcentage;
+
     void Start()
     {
         sceneCamera = Camera.main;
@@ -55,6 +61,6 @@ public class StunAbility : MonoBehaviour
             return;
 
         // Replace this with the stun function when it becomes available
-        Destroy(aiMovement.gameObject);
+		aiMovement.Stun(2f, 0.1f);
     }
 }

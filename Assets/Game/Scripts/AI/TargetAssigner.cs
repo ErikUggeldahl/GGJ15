@@ -77,7 +77,7 @@ public class TargetAssigner : MonoBehaviour {
 		if (locations.Count == 1)
 			return locations [0];
 		else if (locations.Count == 0)
-			return Game.Instance.architectSpawnLocation.transform;
+			return Game.Instance.ArchitectPawn.transform;
 		
 		Transform nearest = locations[0];
 		float nearestDistance = Vector3.Distance(locations[0].position, transform.position);

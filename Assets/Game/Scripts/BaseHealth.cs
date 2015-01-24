@@ -9,14 +9,24 @@ public class BaseHealth : MonoBehaviour
 	public int Health
 	{
 		get { return health; }
-		set { health = value; }
+		set 
+		{ 
+			health = value; 
+			if (Health <= 0 && isAlive)
+				Die();
+		}
 	}
 	
 	bool isAlive = true;
 	public bool IsAlive 
 	{
 		get{ return isAlive; }
-		set{ isAlive = value; }
+		set
+		{
+			isAlive = value;
+
+
+		}
 	}
 
 	protected virtual void SetStartingHP ()
@@ -33,9 +43,6 @@ public class BaseHealth : MonoBehaviour
 	{
 		Debug.Log (gameObject.name + " Took " + aDamage + " of damage");
 		Health -= aDamage;
-
-		if (Health <= 0 && isAlive)
-			Die();
 	}
 	
 	protected virtual void Die()

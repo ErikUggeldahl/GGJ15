@@ -5,8 +5,7 @@ public class AIMovement : MonoBehaviour
 {
 
 	const float AI_TARGET_TRESHOLD = 1.2f;
-
-
+	
 	Transform target;
 	public Transform Target
 	{
@@ -18,26 +17,19 @@ public class AIMovement : MonoBehaviour
 			StartCoroutine(Moving());
 		}
 	}
-	
-	float speedMultiplier;
-	public float SpeedMultiplier
-	{
-		set 
-		{
-			speedMultiplier = value; 
-			movingSpeed = defaultMovingSpeed * speedMultiplier;
-		}
-	}
 
-	public float defaultMovingSpeed;
-	public float maxSpeed;
 	float defaultdrag;
+	float defaultAngularDrag;
+	public float defaultMaxSpeed;
+	float maxSpeed;
+	
 	public bool canMove = true;
 
-	float movingSpeed;
+	public float movingSpeed;
 
 	public float slowDownTime;
 	public float slowDownDragRate;
+	public float slowDownAngularDrag;
 
 	public delegate void MovementFinishDel(Transform target);
 	public event MovementFinishDel OnMovementFinish;
@@ -45,8 +37,9 @@ public class AIMovement : MonoBehaviour
 	// Use this for initialization
 	void Start () 
 	{
-		movingSpeed = defaultMovingSpeed;
+		maxSpeed = defaultMaxSpeed;
 		defaultdrag = rigidbody.drag;
+		defaultAngularDrag = rigidbody.angularDrag;
 	}
 
 	IEnumerator Moving()
@@ -57,19 +50,29 @@ public class AIMovement : MonoBehaviour
 			{
 				transform.LookAt(new Vector3(target.position.x, transform.position.y, target.position.z));
 				if (rigidbody.velocity.magnitude < maxSpeed)
-					rigidbody.AddForce(transform.forward * movingSpeed, ForceMode.VelocityChange );				
+					rigidbody.AddForce(transform.forward * movingSpeed, ForceMode.Acceleration );
 			}
 			yield return new WaitForFixedUpdate();
 		}
 		OnMovementFinish.Invoke(target);
 		StartCoroutine(SlowDown(slowDownTime, slowDownDragRate));
+		StopCoroutine(Moving());
 	}
 
 	IEnumerator SlowDown(float timeToSlowDown, float dragRate)
 	{
 		rigidbody.drag = dragRate;
+		rigidbody.angularDrag = slowDownAngularDrag;
 		yield return new WaitForSeconds(timeToSlowDown);
 		rigidbody.drag = defaultdrag;
+		rigidbody.angularDrag = defaultAngularDrag;
+	}
+
+	public IEnumerator Stun(float time, float slowdownPourcentage)
+	{
+		maxSpeed = slowdownPourcentage * maxSpeed;
+		yield return new WaitForSeconds(time);
+		maxSpeed = defaultMaxSpeed;
 	}
 
 	public static float XZdistanceBetweenTwoVec3(Vector3 location1, Vector3 location2)
