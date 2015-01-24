@@ -22,6 +22,14 @@ public class HarvestableResource : MonoBehaviour
         }
     }
 
+    void Update()
+    {
+        if (isHeld)
+        {
+            this.transform.position = currentOwner.transform.position;
+        }
+    }
+
     public virtual void Pickup(BuilderPawn aPawn)
     {
         CurrentOwner = aPawn;
@@ -30,6 +38,8 @@ public class HarvestableResource : MonoBehaviour
     public virtual void Drop()
     {
         CurrentOwner = null;
+        GridPosition gridPos = GameGrid.Instance.WorldToGridPosition(this.transform.position);
+        this.transform.position = GameGrid.Instance.GridToWorldSpace(gridPos);
     }
 
     protected virtual void OnTriggerEnter(Collider aCollider)
