@@ -15,6 +15,9 @@ public class BuilderPawn : MonoBehaviour
     private BuilderInput builderMovementScript = null;
     public BuilderInput BuilderMovementScript { get { return builderMovementScript; } }
 
+    private BuilderHealth builderHealthScript = null;
+    public BuilderHealth BuilderHealthScript { get { return builderHealthScript; } }
+
     private bool isHoldingItem = false;
     public bool IsHoldingItem { get { return isHoldingItem; } }
 
@@ -66,6 +69,10 @@ public class BuilderPawn : MonoBehaviour
     {
         builderMovementScript = this.gameObject.AddComponent<BuilderInput>();
         builderMovementScript.Initialize(this, aInputDeviceInfo);
+
+        builderHealthScript = this.gameObject.AddComponent<BuilderHealth>();
+        builderHealthScript.Initialize(this);
+       // builderHealthScript.Initialize(this, aInputDeviceInfo);
     }
 
     public void Fire()
@@ -153,29 +160,6 @@ public class BuilderPawn : MonoBehaviour
                 CurrentHeldResource = null;
             }
         }
-    }
-
-    public void TakeDamage(int aDamage)
-    {
-        if (!IsDead)
-        {
-            Health -= aDamage;
-
-            if (Health <= 0)
-            {
-                Die();
-            }
-        }
-    }
-
-    public void Die()
-    {
-        isDead = true;
-    }
-
-    public void Respawn()
-    {
-        isDead = false;
     }
 
     private bool isFiringCoroutineActive = false;

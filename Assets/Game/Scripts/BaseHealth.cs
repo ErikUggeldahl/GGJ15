@@ -24,8 +24,9 @@ public class BaseHealth : MonoBehaviour
 		Health = startingHP;
 	}
 
-	void Respawn()
+	protected virtual void Respawn()
 	{
+
 	}
 	
 	public void TakeDamage(int aDamage)
@@ -37,7 +38,7 @@ public class BaseHealth : MonoBehaviour
 			Die();
 	}
 	
-	void Die()
+	protected virtual void Die()
 	{
 		Debug.Log(gameObject.name + " is dead");
 		IsAlive = false;
