@@ -32,6 +32,7 @@ Shader "Custom/Illustrative"
         _FresnelMultiply ("Fresnel Multiply", float) = 0.2
         _FresnelBias ("Fresnel Bias", float) = -0.1
          
+        _RimColor ("Rim Color", Color) = (1, 1, 1, 1)
         _RimPower ("RimLight Power",float) = 1.0
         _RimMultiply ("RimLight Multiply", float) = 0.2
         _RimBias ("RimLight Bias", float) = 0
@@ -138,6 +139,7 @@ Shader "Custom/Illustrative"
         float _FresnelMultiply;
         float _FresnelBias;
          
+        float3 _RimColor;
         float _RimPower;
         float _RimMultiply;
         float _RimBias;
@@ -225,7 +227,7 @@ Shader "Custom/Illustrative"
                 rim = rim * _RimMultiply;
                 //rim *= max(dot( float3(0,1,0), worldNormal), 0);
                 rim *= clamp((dot( float3(0,1,0), worldNormal) * 0.5) + 0.5 + 0.2,0,1);
-                o.Emission += rim * o.Albedo.rgb * cubeAmbient;
+                o.Emission += rim * o.Albedo.rgb * _RimColor;
                 #endif
             #endif
             
