@@ -106,7 +106,7 @@ public class BuilderPawn : MonoBehaviour, IHealth
                     }
                 }
 
-                if (nearestResource != null)
+                if (nearestResource != null && !nearestResource.IsHeld)
                 {
                     nearestResource.Pickup(this);
                     CurrentHeldResource = nearestResource;
