@@ -46,18 +46,26 @@
 	</Reference>
   </ItemGroup>
   <ItemGroup>
+     <Compile Include="Assets\Game\Scripts\AIInteraction.cs" />
+     <Compile Include="Assets\Game\Scripts\AIMovement.cs" />
      <Compile Include="Assets\Game\Scripts\ArchitectPawn.cs" />
      <Compile Include="Assets\Game\Scripts\BuilderInput.cs" />
      <Compile Include="Assets\Game\Scripts\BuilderPawn.cs" />
+     <Compile Include="Assets\Game\Scripts\DetectPlayers.cs" />
      <Compile Include="Assets\Game\Scripts\Game.cs" />
      <Compile Include="Assets\Game\Scripts\Grid\GameGrid.cs" />
      <Compile Include="Assets\Game\Scripts\Grid\GridSquare.cs" />
+     <Compile Include="Assets\Game\Scripts\Health.cs" />
      <Compile Include="Assets\Game\Scripts\Items\HarvestableResource.cs" />
      <Compile Include="Assets\Game\Scripts\Items\Rock.cs" />
      <Compile Include="Assets\Game\Scripts\Items\Tree.cs" />
+     <Compile Include="Assets\Game\Scripts\Net\NetPoller.cs" />
+     <Compile Include="Assets\Game\Scripts\Net\TestNetPoller.cs" />
      <Compile Include="Assets\Game\Scripts\PlayerProfile.cs" />
+     <Compile Include="Assets\Game\Scripts\TargetAssigner.cs" />
      <Compile Include="Assets\MP_Input\MP_Input.cs" />
      <Compile Include="Assets\MP_Input\MP_InputConfig.cs" />
+     <None Include="Assets\Game\SmallReadme.txt" />
      <None Include="Assets\Game\Shaders\Ground.shader" />
  <Reference Include="UnityEngine.UI">
  <HintPath>C:/Program Files (x86)/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/4.6.1/UnityEngine.UI.dll</HintPath>
