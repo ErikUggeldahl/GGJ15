@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class Building : MonoBehaviour
 {
@@ -13,6 +14,8 @@ public class Building : MonoBehaviour
 
     public Material UnderConstructionMaterial;
     public Material FinishedMaterial;
+
+    public List<GameObject> BuildingRenderObjects = new List<GameObject>();
 
     public int WoodRequired;
     public int StoneRequired;
@@ -38,7 +41,10 @@ public class Building : MonoBehaviour
     {
         CurrentBuildingState = BuildingState.Finished;
 
-        this.renderer.material = FinishedMaterial;
+        foreach(GameObject go in BuildingRenderObjects)
+        {
+            go.renderer.material = FinishedMaterial;
+        }
     }
 
     public virtual bool AddResource(HarvestableResource aResource)
