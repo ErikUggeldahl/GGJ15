@@ -19,6 +19,9 @@ public class BuilderPawn : MonoBehaviour, IHealth
     private bool isDead = false;
     public bool IsDead { get { return isDead; } }
 
+    private bool isFiring = false;
+    public bool IsFiring { get { return isFiring; } }
+
     // Penalty from 0.0f - 1.0f (1% to 100%)
     public float movementPenaltyPercent = 0;
     public float MovementPenaltyPercent { get { return movementPenaltyPercent; } }
@@ -64,38 +67,59 @@ public class BuilderPawn : MonoBehaviour, IHealth
 
     public void Fire()
     {
+        if (!IsHoldingItem)
+        {
+            if (!IsFiring)
+            {
+                isFiring = true;
+                StartCoroutine(FiringCycle(1.5f));
+            }
+        }
+    }
 
+    public void CeaseFire()
+    {
+        if (IsFiring)
+        {
+            isFiring = false;
+        }
     }
 
     public void PickupItem()
     {
-        if(NearbyResources.Count > 0)
+        if (!IsFiring)
         {
-            HarvestableResource nearestResource = NearbyResources[0];
-
-            for(int i = 1; i < NearbyResources.Count; i++)
+            if (NearbyResources.Count > 0)
             {
-                float smallestDistance = Vector3.Distance(nearestResource.transform.position, this.transform.position);
-                float nextDistance = Vector3.Distance(NearbyResources[i].transform.position, this.transform.position);
+                HarvestableResource nearestResource = NearbyResources[0];
 
-                if (nextDistance < smallestDistance)
+                for (int i = 1; i < NearbyResources.Count; i++)
                 {
-                    nearestResource = NearbyResources[i];
-                }
-            }
+                    float smallestDistance = Vector3.Distance(nearestResource.transform.position, this.transform.position);
+                    float nextDistance = Vector3.Distance(NearbyResources[i].transform.position, this.transform.position);
 
-            if(nearestResource != null)
-            {
-                nearestResource.Pickup(this);
-                CurrentHeldResource = nearestResource;
+                    if (nextDistance < smallestDistance)
+                    {
+                        nearestResource = NearbyResources[i];
+                    }
+                }
+
+                if (nearestResource != null)
+                {
+                    nearestResource.Pickup(this);
+                    CurrentHeldResource = nearestResource;
+                }
             }
         }
     }
 
     public void DropItem()
     {
-        CurrentHeldResource.Drop();
-        CurrentHeldResource = null;
+        if (IsHoldingItem)
+        {
+            CurrentHeldResource.Drop();
+            CurrentHeldResource = null;
+        }
     }
 
     public void TakeDamage(int aDamage)
@@ -119,5 +143,17 @@ public class BuilderPawn : MonoBehaviour, IHealth
     public void Respawn()
     {
         isDead = false;
+    }
+
+    private IEnumerator FiringCycle(float aWeaponFireAnimationTime)
+    {
+        do
+        {
+            // Fire projectile.
+            Debug.Log("Firing projectile");
+
+            yield return new WaitForSeconds(aWeaponFireAnimationTime);
+
+        } while (IsFiring == true);
     }
 }

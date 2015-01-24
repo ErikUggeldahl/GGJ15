@@ -33,7 +33,7 @@ public class BuilderInput : MonoBehaviour
         xAxisLook = MP_Input.GetAxis("AimHorizontal", inputDeviceInfo);
         yAxisLook = MP_Input.GetAxis("AimVertical", inputDeviceInfo);
         
-        isFireButtonPressed = MP_Input.GetButtonDown("BuilderFire", inputDeviceInfo);
+        isFireButtonPressed = MP_Input.GetButton("BuilderFire", inputDeviceInfo);
         isPickupButtonPressed = MP_Input.GetButtonDown("Pickup/Drop", inputDeviceInfo);
     }
 
@@ -68,6 +68,10 @@ public class BuilderInput : MonoBehaviour
         if (isFireButtonPressed)
         {
             pawn.Fire();
+        }
+        else
+        {
+            pawn.CeaseFire();
         }
     }
 }
