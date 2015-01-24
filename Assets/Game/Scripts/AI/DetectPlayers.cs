@@ -17,14 +17,14 @@ public class DetectPlayers : MonoBehaviour {
 	// Only used for agro Sphere
 	void OnTriggerEnter(Collider other)
 	{
-		if ((other.tag == "Builder" || other.tag == "Architect") && triggerType == TriggerType.activateAgro) 
+		if ((other.tag == "Builder" || other.tag == "Architect") && other.GetComponent<BaseHealth>().IsAlive && triggerType == TriggerType.activateAgro) 
 			targetAssign.PlayerDetected(other.transform);
 	}
 
 	// Only used for boredAgro Sphere
 	void OnTriggerExit(Collider other)
 	{
-		if ((other.tag == "Builder" || other.tag == "Architect") && triggerType == TriggerType.loseAgro) 
+		if ((other.tag == "Builder" || other.tag == "Architect") && other.GetComponent<BaseHealth>().IsAlive && triggerType == TriggerType.loseAgro) 
 			targetAssign.PlayerLost(other.transform);
 	}
 }

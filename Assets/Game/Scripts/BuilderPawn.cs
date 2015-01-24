@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 using MPInput;
 
-public class BuilderPawn : MonoBehaviour, IHealth
+public class BuilderPawn : MonoBehaviour
 {
     public GameObject SpearPrefab;
 

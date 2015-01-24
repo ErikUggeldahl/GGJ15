@@ -6,6 +6,7 @@ public class AIMovement : MonoBehaviour
 
 	const float AI_TARGET_TRESHOLD = 1.2f;
 
+
 	Transform target;
 	public Transform Target
 	{
@@ -13,6 +14,7 @@ public class AIMovement : MonoBehaviour
 		set 
 		{ 
 			target = value; 
+			StopCoroutine("Moving");
 			StartCoroutine(Moving());
 		}
 	}
@@ -28,6 +30,8 @@ public class AIMovement : MonoBehaviour
 	}
 
 	public float defaultMovingSpeed;
+	public float maxSpeed;
+	float defaultdrag;
 	public bool canMove = true;
 
 	float movingSpeed;
@@ -42,17 +46,18 @@ public class AIMovement : MonoBehaviour
 	void Start () 
 	{
 		movingSpeed = defaultMovingSpeed;
+		defaultdrag = rigidbody.drag;
 	}
 
 	IEnumerator Moving()
 	{
-		Debug.Log (Vector3.Distance (Vector3.Scale (transform.position, Vector3.forward + Vector3.right), Vector3.Scale (target.position, Vector3.forward + Vector3.right)));
-		while (Vector3.Distance(Vector3.Scale(transform.position, Vector3.forward + Vector3.right), Vector3.Scale(target.position, Vector3.forward + Vector3.right)) > AI_TARGET_TRESHOLD)
+		while (XZdistanceBetweenTwoVec3(transform.position, target.position) > AI_TARGET_TRESHOLD)
 		{
 			if (target != null && canMove) 
 			{
 				transform.LookAt(new Vector3(target.position.x, transform.position.y, target.position.z));
-				rigidbody.AddForce(transform.forward * movingSpeed, ForceMode.VelocityChange );				
+				if (rigidbody.velocity.magnitude < maxSpeed)
+					rigidbody.AddForce(transform.forward * movingSpeed, ForceMode.VelocityChange );				
 			}
 			yield return new WaitForFixedUpdate();
 		}
@@ -62,9 +67,13 @@ public class AIMovement : MonoBehaviour
 
 	IEnumerator SlowDown(float timeToSlowDown, float dragRate)
 	{
-		float initialDrag = rigidbody.drag;
 		rigidbody.drag = dragRate;
 		yield return new WaitForSeconds(timeToSlowDown);
-		rigidbody.drag = initialDrag;
+		rigidbody.drag = defaultdrag;
+	}
+
+	public static float XZdistanceBetweenTwoVec3(Vector3 location1, Vector3 location2)
+	{
+		return Vector3.Distance (Vector3.Scale (location1, Vector3.forward + Vector3.right), Vector3.Scale (location2, Vector3.forward + Vector3.right));
 	}
 }

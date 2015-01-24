@@ -1,11 +1,12 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class AIInteraction : MonoBehaviour {
+public class BuilderHealth : BaseHealth {
 
 	// Use this for initialization
-	void Start () {
-	
+	void Start () 
+	{
+		SetStartingHP();
 	}
 	
 	// Update is called once per frame

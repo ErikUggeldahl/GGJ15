@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class ArchitectPawn : MonoBehaviour, IHealth
+public class ArchitectPawn : MonoBehaviour
 {
     private int health;
     public int Health { set { health = value; } get { return health; } }

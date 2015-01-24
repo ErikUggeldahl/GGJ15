@@ -12,7 +12,7 @@ enum AIActionStates
 public class TargetAssigner : MonoBehaviour {
 
 	public AIMovement movement;
-	public Transform TestTarget;
+	public AIInteraction interact;
 
 	public SphereCollider agroSphere;
 	public SphereCollider boredSphere;
@@ -32,7 +32,12 @@ public class TargetAssigner : MonoBehaviour {
 
 	void OnMovementDone(Transform target)
 	{
-
+		Debug.Log ("Done Moving");
+		BaseHealth targetHealth = target.GetComponent<BaseHealth> ();
+		if (targetHealth != null)
+			interact.Attack (targetHealth);
+		else
+			Debug.LogWarning (target.name +" Does not have health but AI is trying to attack it");
 	}
 
 	public void PlayerDetected(Transform player)
@@ -49,8 +54,10 @@ public class TargetAssigner : MonoBehaviour {
 
 	public void PlayerLost(Transform player)
 	{
-		if (listOfPlayers.Find (x => x.GetInstanceID () == player.GetInstanceID ()) != null)
-			listOfPlayers.Remove (player);
+		List<Transform> allPlayers;
+		allPlayers = listOfPlayers.FindAll (x => x.GetInstanceID () == player.GetInstanceID ());
+		if(allPlayers.Count != 0)
+			listOfPlayers.RemoveAll(x => x.GetInstanceID () == player.GetInstanceID ());
 		else 
 		{
 			Debug.Log ("Player left bored Sphere without entering agro first");
