@@ -1,0 +1,1 @@
+Players should have their own physic layer to increase AIs performance which will allow us to spawn more
