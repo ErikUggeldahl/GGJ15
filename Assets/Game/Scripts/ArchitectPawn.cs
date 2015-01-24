@@ -1,8 +1,13 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class ArchitectPawn : MonoBehaviour
 {
+    int totemHieght = 3;
+
+    List<Transform> totemSegments = new List<Transform>();
+
     private int health;
     public int Health { set { health = value; } get { return health; } }
 
