@@ -10,6 +10,9 @@ public class BuildingPlacer : MonoBehaviour
     }
 
     [SerializeField]
+    StunAbility stun;
+
+    [SerializeField]
     GameObject wallPreviewObj;
 
     [SerializeField]
@@ -21,8 +24,7 @@ public class BuildingPlacer : MonoBehaviour
     [SerializeField]
     GameObject towerObj;
 
-    [SerializeField]
-    Camera camera;
+    private Camera sceneCamera;
 
     private Transform wallPreview;
     private Transform towerPreview;
@@ -36,13 +38,15 @@ public class BuildingPlacer : MonoBehaviour
 
     void Start()
     {
-        groundLayer = LayerMask.NameToLayer("Ground");
+        sceneCamera = Camera.main;
 
         wallPreview = ((GameObject)Instantiate(wallPreviewObj)).transform;
         wallPreview.gameObject.SetActive(false);
 
         towerPreview = ((GameObject)Instantiate(towerPreviewObj)).transform;
         towerPreview.gameObject.SetActive(false);
+
+        groundLayer = LayerMask.NameToLayer("Ground");
     }
 
     public void StartBuildingWall()
@@ -57,6 +61,8 @@ public class BuildingPlacer : MonoBehaviour
 
     public void StartBuilding(BuildingType buildingType)
     {
+        stun.DisableStunning();
+
         currentBuildingType = buildingType;
         isBuilding = true;
 
@@ -65,6 +71,8 @@ public class BuildingPlacer : MonoBehaviour
 
     private void StopBuilding()
     {
+        stun.EnableStunningDelayed();
+
         isBuilding = false;
         currentPreview.gameObject.SetActive(false);
     }
@@ -75,7 +83,7 @@ public class BuildingPlacer : MonoBehaviour
             return;
 
         RaycastHit hitInfo;
-        var mouseRay = camera.ScreenPointToRay(Input.mousePosition);
+        var mouseRay = sceneCamera.ScreenPointToRay(Input.mousePosition);
 
         var isHit = Physics.Raycast(mouseRay, out hitInfo, float.PositiveInfinity, 1 << groundLayer);
 
