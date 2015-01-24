@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 0e9ff868ee0279547af3962f2aea8685
+guid: e7a70615fe223f54485207de4dea8696
 ModelImporter:
   serializedVersion: 16
   fileIDToRecycleName:
@@ -7,9 +7,7 @@ ModelImporter:
     400000: //RootNode
     2300000: //RootNode
     3300000: //RootNode
-    4300000: GrountTest
-    4300002: Ground
-    4300004: Object061
+    4300000: Object062
     9500000: //RootNode
   materials:
     importMaterials: 1
