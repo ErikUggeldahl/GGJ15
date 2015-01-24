@@ -46,6 +46,7 @@ public class AIMovement : MonoBehaviour
 
 	IEnumerator Moving()
 	{
+		Debug.Log (Vector3.Distance (Vector3.Scale (transform.position, Vector3.forward + Vector3.right), Vector3.Scale (target.position, Vector3.forward + Vector3.right)));
 		while (Vector3.Distance(Vector3.Scale(transform.position, Vector3.forward + Vector3.right), Vector3.Scale(target.position, Vector3.forward + Vector3.right)) > AI_TARGET_TRESHOLD)
 		{
 			if (target != null && canMove) 

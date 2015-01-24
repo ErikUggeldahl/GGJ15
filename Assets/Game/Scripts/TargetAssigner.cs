@@ -16,17 +16,17 @@ public class TargetAssigner : MonoBehaviour {
 
 	public SphereCollider agroSphere;
 	public SphereCollider boredSphere;
-	public Transform foundTarget = null;
-	public List<Transform> listOfPlayers = new List<Transform>();
+	internal List<Transform> listOfPlayers = new List<Transform>();
 
 	void Awake()
 	{
-		movement.Target = TestTarget;
+		// By default, go towards the architect
 
 	}
 	// Use this for initialization
 	void Start ()
 	{
+		movement.Target = Game.Instance.architectSpawnLocation.transform;
 		movement.OnMovementFinish += OnMovementDone;
 	}
 
@@ -40,7 +40,7 @@ public class TargetAssigner : MonoBehaviour {
 		if (listOfPlayers.Count == 0 || player.tag == "King") 
 		{
 			Debug.Log("New Target is: " + player);
-			foundTarget = player;
+			movement.Target = player;
 		}
 		
 		listOfPlayers.Add(player);
@@ -58,8 +58,8 @@ public class TargetAssigner : MonoBehaviour {
 		}
 
 		// If the currently found target is leaving, find a new one
-		if (player.GetInstanceID() == foundTarget.GetInstanceID() && foundTarget.tag != "King")
-			foundTarget = NearestTransformFromSelf(listOfPlayers);
+		if (player.GetInstanceID() == movement.Target.GetInstanceID() && movement.Target.tag != "King")
+			movement.Target = NearestTransformFromSelf(listOfPlayers);
 
 		Debug.Log("Player Removed");
 	}
@@ -70,7 +70,7 @@ public class TargetAssigner : MonoBehaviour {
 		if (locations.Count == 1)
 			return locations [0];
 		else if (locations.Count == 0)
-			return null;
+			return Game.Instance.architectSpawnLocation.transform;
 		
 		Transform nearest = locations[0];
 		float nearestDistance = Vector3.Distance(locations[0].position, transform.position);

@@ -1,18 +1,16 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.Default" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Game\Scripts\TargetAssigner.cs">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="g:\GGJ15\trunk\Assets\MP_Input\MP_Input.cs">
     <Files>
-      <File FileName="Assets\Game\Scripts\DetectPlayers.cs" Line="27" Column="54" />
-      <File FileName="Assets\Game\Scripts\AIMovement.cs" Line="16" Column="28" />
-      <File FileName="Assets\Game\Scripts\TargetAssigner.cs" Line="42" Column="1" />
+      <File FileName="Assets\Game\Scripts\TargetAssigner.cs" Line="18" Column="36" />
+      <File FileName="Assets\Game\Scripts\AIMovement.cs" Line="49" Column="168" />
       <File FileName="Assets\Game\Scripts\Health.cs" Line="1" Column="1" />
+      <File FileName="Assets\Game\Scripts\DetectPlayers.cs" Line="27" Column="53" />
       <File FileName="g:\GGJ15\trunk\Assets\MP_Input\MP_Input.cs" Line="27" Column="74" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
-    <BreakpointStore>
-      <Breakpoint file="G:\GGJ15\trunk\Assets\Game\Scripts\TargetAssigner.cs" line="42" />
-    </BreakpointStore>
+    <BreakpointStore />
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
 </Properties>
