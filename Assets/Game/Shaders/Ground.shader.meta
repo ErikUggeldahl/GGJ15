@@ -1,0 +1,7 @@
+fileFormatVersion: 2
+guid: f0c3efb4545536e4f9f3f0128390fc1b
+ShaderImporter:
+  defaultTextures:
+  - _DirtTex: {fileID: 2800000, guid: f79f1e985c8b31d418e47fb1b695569d, type: 3}
+  - _GrassTex: {fileID: 2800000, guid: 6ec85943dcc0d134c83fef6d9f79c45a, type: 3}
+  userData: 
