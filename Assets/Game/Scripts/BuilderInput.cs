@@ -5,8 +5,6 @@ using MPInput;
 
 public class BuilderInput : MonoBehaviour
 {
-    public float Drag = 2;
-
     private MP_InputDeviceInfo inputDeviceInfo = null;
     public MP_InputDeviceInfo InputDeviceInfo { get { return inputDeviceInfo; } }
 
@@ -41,12 +39,18 @@ public class BuilderInput : MonoBehaviour
 
     public void FixedUpdate()
     {
-        // Commit actions based on input
+        // ** Commit actions based on input ** //
+        
+        // Movement
         Vector3 moveDirection = new Vector3(xAxisMove, 0, yAxisMove).normalized;
-        Vector3 moveForce = moveDirection * 20;
-
-        this.gameObject.rigidbody.drag = Drag;
+        Vector3 moveForce = (moveDirection * pawn.MovementForce) * (1.0f - pawn.MovementPenaltyPercent);
+        this.gameObject.rigidbody.drag = pawn.MovementDrag;
         this.gameObject.rigidbody.AddForce(moveForce);
+
+        // Aiming
+        Vector3 targetLookDirection = new Vector3(xAxisLook, 0, yAxisLook).normalized;
+        Vector3 currentLookDirection = Vector3.RotateTowards(this.transform.forward, targetLookDirection, pawn.LookForce * Time.fixedDeltaTime, 0.0f);
+        this.gameObject.transform.rotation = Quaternion.LookRotation(currentLookDirection);
 
         // Buttons
         if(isPickupButtonPressed)

@@ -32,7 +32,7 @@ public class Game : MonoBehaviour
                 
                 if (newBuilderPawn != null)
                 {
-                    newBuilderPawn.CreatePawn(device);
+                    newBuilderPawn.Initialize(device);
                     BuilderPawns.Add(newBuilderPawn);
                 }
 
