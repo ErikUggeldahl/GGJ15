@@ -13,11 +13,6 @@ public class GridSquare : MonoBehaviour
     {
         Position = new GridPosition(aX, aY);
         transform.position = GameGrid.Instance.GridToWorldSpace(Position);
-        transform.rotation = Quaternion.LookRotation(Vector3.down);
-
-        gameObject.AddComponent<MeshFilter>().mesh = GameGrid.Instance.gridQuad;
-        gameObject.AddComponent<MeshRenderer>().material = GameGrid.Instance.gridMaterial;
-        //gameObject.AddComponent<BoxCollider>();
 
         gameObject.layer = groundLayer;
     }

@@ -13,7 +13,6 @@ public class Tower : Building
 	GameObject FindTarget()
 	{
 
-
         return null;
 	}
 
@@ -22,6 +21,11 @@ public class Tower : Building
 		if (CurrentBuildingState == BuildingState.Finished)
 			OrientTurret ();
 	}
+
+    void FireProjectile()
+    {
+
+    }
 
 	void OrientTurret()
 	{
