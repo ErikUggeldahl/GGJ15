@@ -45,7 +45,7 @@ public class StunAbility : MonoBehaviour
 
     void Update()
     {
-        if (!Input.GetMouseButton(0) || !isStunning)
+        if (!Input.GetMouseButtonDown(0) || !isStunning)
             return;
 
         RaycastHit hitInfo;
@@ -60,6 +60,6 @@ public class StunAbility : MonoBehaviour
         if (aiMovement == null)
             return;
 
-		aiMovement.Stun(Duration, SlowFactor);
+		aiMovement.StartStun(Duration, SlowFactor);
     }
 }

@@ -69,9 +69,14 @@ public class AIMovement : MonoBehaviour
 		rigidbody.angularDrag = defaultAngularDrag;
 	}
 
-	public IEnumerator Stun(float time, float slowdownPourcentage)
+    public void StartStun(float time, float slowdownPercentage)
+    {
+        StartCoroutine(Stun(time, slowdownPercentage));
+    }
+
+	private IEnumerator Stun(float time, float slowdownPercentage)
 	{
-		maxSpeed = slowdownPourcentage * maxSpeed;
+		maxSpeed = slowdownPercentage * maxSpeed;
 		yield return new WaitForSeconds(time);
 		maxSpeed = defaultMaxSpeed;
 	}
