@@ -82,6 +82,12 @@ public class BuildingPlacer : MonoBehaviour
         if (!isBuilding)
             return;
 
+        if (Input.GetMouseButtonDown(1))
+        {
+            StopBuilding();
+            return;
+        }
+
         RaycastHit hitInfo;
         var mouseRay = sceneCamera.ScreenPointToRay(Input.mousePosition);
 
