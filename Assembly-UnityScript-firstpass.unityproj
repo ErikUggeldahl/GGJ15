@@ -5,11 +5,11 @@
 	<Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
 	<ProductVersion>10.0.20506</ProductVersion>
 	<SchemaVersion>2.0</SchemaVersion>
-	<ProjectGuid>{C9C5ACED-AF37-B251-9AC8-2374AADD4A08}</ProjectGuid>
+	<ProjectGuid>{86B659CC-1081-2BE2-8A2F-2F1FD391F4DA}</ProjectGuid>
 	<OutputType>Library</OutputType>
 	<AppDesignerFolder>Properties</AppDesignerFolder>
 	<RootNamespace></RootNamespace>
-	<AssemblyName>Assembly-CSharp</AssemblyName>
+	<AssemblyName>Assembly-UnityScript-firstpass</AssemblyName>
 	<TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
 	<FileAlignment>512</FileAlignment>
 	<BaseDirectory>Assets</BaseDirectory>
@@ -46,26 +46,32 @@
 	</Reference>
   </ItemGroup>
   <ItemGroup>
-     <Compile Include="Assets\Game\Scripts\AIInteraction.cs" />
-     <Compile Include="Assets\Game\Scripts\AIMovement.cs" />
-     <Compile Include="Assets\Game\Scripts\ArchitectPawn.cs" />
-     <Compile Include="Assets\Game\Scripts\BuilderInput.cs" />
-     <Compile Include="Assets\Game\Scripts\BuilderPawn.cs" />
-     <Compile Include="Assets\Game\Scripts\DetectPlayers.cs" />
-     <Compile Include="Assets\Game\Scripts\Game.cs" />
-     <Compile Include="Assets\Game\Scripts\Grid\GameGrid.cs" />
-     <Compile Include="Assets\Game\Scripts\Grid\GridSquare.cs" />
-     <Compile Include="Assets\Game\Scripts\Health.cs" />
-     <Compile Include="Assets\Game\Scripts\Items\HarvestableResource.cs" />
-     <Compile Include="Assets\Game\Scripts\Items\Rock.cs" />
-     <Compile Include="Assets\Game\Scripts\Items\Tree.cs" />
-     <Compile Include="Assets\Game\Scripts\Net\NetPoller.cs" />
-     <Compile Include="Assets\Game\Scripts\Net\TestNetPoller.cs" />
-     <Compile Include="Assets\Game\Scripts\PlayerProfile.cs" />
-     <Compile Include="Assets\Game\Scripts\TargetAssigner.cs" />
-     <Compile Include="Assets\Game\Shaders\AmbientSettings.cs" />
-     <Compile Include="Assets\MP_Input\MP_Input.cs" />
-     <Compile Include="Assets\MP_Input\MP_InputConfig.cs" />
+     <Compile Include="Assets\Standard Assets\Image Effects (Pro Only)\AmbientObscurance.js" />
+     <Compile Include="Assets\Standard Assets\Image Effects (Pro Only)\AntialiasingAsPostEffect.js" />
+     <Compile Include="Assets\Standard Assets\Image Effects (Pro Only)\Bloom.js" />
+     <Compile Include="Assets\Standard Assets\Image Effects (Pro Only)\BloomAndLensFlares.js" />
+     <Compile Include="Assets\Standard Assets\Image Effects (Pro Only)\Blur.js" />
+     <Compile Include="Assets\Standard Assets\Image Effects (Pro Only)\CameraMotionBlur.js" />
+     <Compile Include="Assets\Standard Assets\Image Effects (Pro Only)\ColorCorrectionCurves.js" />
+     <Compile Include="Assets\Standard Assets\Image Effects (Pro Only)\ColorCorrectionLut.js" />
+     <Compile Include="Assets\Standard Assets\Image Effects (Pro Only)\ContrastEnhance.js" />
+     <Compile Include="Assets\Standard Assets\Image Effects (Pro Only)\Crease.js" />
+     <Compile Include="Assets\Standard Assets\Image Effects (Pro Only)\DepthOfField34.js" />
+     <Compile Include="Assets\Standard Assets\Image Effects (Pro Only)\DepthOfFieldScatter.js" />
+     <Compile Include="Assets\Standard Assets\Image Effects (Pro Only)\EdgeDetectEffectNormals.js" />
+     <Compile Include="Assets\Standard Assets\Image Effects (Pro Only)\FastBloom.js" />
+     <Compile Include="Assets\Standard Assets\Image Effects (Pro Only)\Fisheye.js" />
+     <Compile Include="Assets\Standard Assets\Image Effects (Pro Only)\GlobalFog.js" />
+     <Compile Include="Assets\Standard Assets\Image Effects (Pro Only)\NoiseAndGrain.js" />
+     <Compile Include="Assets\Standard Assets\Image Effects (Pro Only)\PostEffectsBase.js" />
+     <Compile Include="Assets\Standard Assets\Image Effects (Pro Only)\PostEffectsHelper.js" />
+     <Compile Include="Assets\Standard Assets\Image Effects (Pro Only)\Quads.js" />
+     <Compile Include="Assets\Standard Assets\Image Effects (Pro Only)\ScreenOverlay.js" />
+     <Compile Include="Assets\Standard Assets\Image Effects (Pro Only)\SunShafts.js" />
+     <Compile Include="Assets\Standard Assets\Image Effects (Pro Only)\TiltShiftHdr.js" />
+     <Compile Include="Assets\Standard Assets\Image Effects (Pro Only)\Tonemapping.js" />
+     <Compile Include="Assets\Standard Assets\Image Effects (Pro Only)\Triangles.js" />
+     <Compile Include="Assets\Standard Assets\Image Effects (Pro Only)\Vignetting.js" />
      <None Include="Assets\Standard Assets\Image Effects (Pro Only)\_Sources\Shaders\_BloomAndFlares\BlendOneOne.shader" />
      <None Include="Assets\Standard Assets\Image Effects (Pro Only)\_Sources\Shaders\NoiseEffectShaderRGB.shader" />
      <None Include="Assets\Standard Assets\Image Effects (Pro Only)\_Sources\Shaders\_DepthOfField\SeparableWeightedBlurDof34.shader" />
@@ -138,16 +144,9 @@
      <None Include="Assets\Standard Assets\Image Effects (Pro Only)\_Sources\Shaders\_Antialiasing\FXAAPreset2.shader" />
      <None Include="Assets\Standard Assets\Image Effects (Pro Only)\_Sources\Shaders\_BloomAndFlares\BlurAndFlares.shader" />
      <None Include="Assets\Standard Assets\Image Effects (Pro Only)\_Sources\Shaders\_BloomAndFlares\BlendForBloom.shader" />
- <Reference Include="Assembly-UnityScript-firstpass">
- <HintPath>G:/GameJam 2015/trunk/Library/ScriptAssemblies/Assembly-UnityScript-firstpass.dll</HintPath>
- </Reference>
  <Reference Include="UnityEngine.UI">
  <HintPath>C:/Program Files (x86)/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/4.6.1/UnityEngine.UI.dll</HintPath>
  </Reference>
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="Assembly-CSharp-firstpass-vs.csproj">
-      <Project>{1ECCC056-403F-DE82-16EC-800D8F942A9F}</Project>      <Name>Assembly-CSharp-firstpass-vs</Name>    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
