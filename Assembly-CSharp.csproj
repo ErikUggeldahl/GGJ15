@@ -52,6 +52,9 @@
      <Compile Include="Assets\Game\Scripts\Game.cs" />
      <Compile Include="Assets\Game\Scripts\Grid\GameGrid.cs" />
      <Compile Include="Assets\Game\Scripts\Grid\GridSquare.cs" />
+     <Compile Include="Assets\Game\Scripts\Items\HarvestableResource.cs" />
+     <Compile Include="Assets\Game\Scripts\Items\Rock.cs" />
+     <Compile Include="Assets\Game\Scripts\Items\Tree.cs" />
      <Compile Include="Assets\Game\Scripts\PlayerProfile.cs" />
      <Compile Include="Assets\MP_Input\MP_Input.cs" />
      <Compile Include="Assets\MP_Input\MP_InputConfig.cs" />

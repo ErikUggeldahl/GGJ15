@@ -25,6 +25,7 @@ public class GameGrid : MonoBehaviour
     }
 
     public float gridScale = 1;
+
     public int gridSizeX = 100;
     public int gridSizeY = 100;
 
@@ -33,10 +34,22 @@ public class GameGrid : MonoBehaviour
     public Mesh gridQuad;
     public Material gridMaterial;
 
+    public Tree TreePrefab;
+    public int TreeCount = 50;
+
+    public Rock RockPrefab;
+    public int RockCount = 5;
+
     void Awake()
     {
         instance = this;
         CreateGrid();
+        PopulateResources();
+    }
+
+    public GridSquare GetGridSquare(GridPosition aPosition)
+    {
+        return gridSquares[aPosition.X, aPosition.Y];
     }
 
     void CreateGrid()
@@ -54,6 +67,42 @@ public class GameGrid : MonoBehaviour
                 newSquare.Init(x, y);
                 gridSquares[x, y] = newSquare;
             }
+        }
+    }
+
+    void PopulateResources()
+    {
+        PopulateRocks();
+        PopulateTrees();
+    }
+
+    void PopulateRocks()
+    {
+        for (int i = 0; i < RockCount; i++)
+        {
+            GridPosition newPosition;
+            do
+            {
+                newPosition = new GridPosition(Random.Range(0, gridSizeX), Random.Range(0, gridSizeY));
+            }
+            while (GetGridSquare(newPosition).ResidingObject != null);
+
+            GetGridSquare(newPosition).ResidingObject = (Instantiate(RockPrefab, GridToWorldSpace(newPosition), Quaternion.identity) as Rock).gameObject;
+        }
+    }
+
+    void PopulateTrees()
+    {
+        for (int i = 0; i < TreeCount; i++)
+        {
+            GridPosition newPosition;
+            do
+            {
+                newPosition = new GridPosition(Random.Range(0, gridSizeX), Random.Range(0, gridSizeY));
+            }
+            while (GetGridSquare(newPosition).ResidingObject != null);
+
+            GetGridSquare(newPosition).ResidingObject = (Instantiate(TreePrefab, GridToWorldSpace(newPosition), Quaternion.identity) as Tree).gameObject;
         }
     }
 
