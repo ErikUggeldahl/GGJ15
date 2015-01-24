@@ -63,6 +63,7 @@
      <Compile Include="Assets\Game\Scripts\Net\NetPoller.cs" />
      <Compile Include="Assets\Game\Scripts\Net\TestNetPoller.cs" />
      <Compile Include="Assets\Game\Scripts\PlayerProfile.cs" />
+     <Compile Include="Assets\Game\Scripts\Projectile.cs" />
      <Compile Include="Assets\Game\Scripts\TargetAssigner.cs" />
      <Compile Include="Assets\Game\Shaders\AmbientSettings.cs" />
      <Compile Include="Assets\MP_Input\MP_Input.cs" />
