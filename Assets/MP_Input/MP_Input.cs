@@ -109,7 +109,7 @@ namespace MPInput
         public const string CONFIG_FILENAME = "MP_InputConfig";
         const float CHECK_FOR_CONNECTED_CONTROLLER_INTERVAL = 1.0f;
         const bool DEBUG_INPUT = false;
-        const float AXIS_DEADZONE = 0.2f;
+        const float AXIS_DEADZONE = 0.4f;
 
         static MP_Input instance = null;
         static MP_Input Instance { get { return instance; } }
