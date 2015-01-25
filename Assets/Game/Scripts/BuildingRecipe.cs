@@ -7,18 +7,15 @@ public class BuildingRecipe : MonoBehaviour {
 	{
 		public int wood;
 		public int rock;
+
+		public Recipe(int _wood, int _rock)
+		{
+			wood = _wood;
+			rock = _rock;
+		}
 	}
-
-	public static Recipe wall = new Recipe();
-	public static Recipe turret = new Recipe();
-
-	void Start()
-	{
-		wall.wood = 1;
-		wall.rock = 0;
-
-		turret.wood = 3;
-		turret.rock = 2;
-	}
+	
+	public static Recipe wall = new Recipe(1,0);
+	public static Recipe turret = new Recipe(3,2);
 
 }

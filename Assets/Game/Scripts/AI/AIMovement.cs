@@ -18,8 +18,8 @@ public class AIMovement : MonoBehaviour
 		}
 	}
 
-	Wall structureToDestroy;
-	public Wall StructureToDestroy
+	Building structureToDestroy;
+	public Building StructureToDestroy
 	{
 		get { return structureToDestroy; }
 		set 
@@ -67,10 +67,8 @@ public class AIMovement : MonoBehaviour
 			}
 			yield return new WaitForFixedUpdate();
 		}
-		Debug.Log ("MovementDone");
 		OnMovementFinish.Invoke(target);
 		StartCoroutine(SlowDown(slowDownTime, slowDownDragRate));
-		StopCoroutine(Moving());
 	}
 
 	IEnumerator SlowDown(float timeToSlowDown, float dragRate)
@@ -82,9 +80,9 @@ public class AIMovement : MonoBehaviour
 		rigidbody.angularDrag = defaultAngularDrag;
 	}
 
-	IEnumerator ClearWay(Wall wall)
+	IEnumerator ClearWay(Building building)
 	{
-		BaseHealth wallHealth = wall.GetComponent<BaseHealth>();
+		BaseHealth wallHealth = building.GetComponent<BaseHealth>();
 		AIInteraction aiInteract = GetComponent<AIInteraction>();
 		while (wallHealth.IsAlive) 
 		{

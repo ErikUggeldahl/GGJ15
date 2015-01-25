@@ -10,6 +10,9 @@ public abstract class Building : MonoBehaviour
         Finished
     }
 
+	public delegate void resourceReceivedDel();
+	public event resourceReceivedDel onResourceReceived;
+
     private static List<Building> allBuildings = new List<Building>();
     public static Building[] AllBuildings { get { return allBuildings.ToArray(); } }
 
@@ -102,6 +105,7 @@ public abstract class Building : MonoBehaviour
         {
             Destroy(aResource.gameObject);
             currentWood++;
+			onResourceReceived.Invoke();
             CheckBuld();
             return true;
         }
@@ -109,6 +113,7 @@ public abstract class Building : MonoBehaviour
         {
             Destroy(aResource.gameObject);
             currentStone++;
+			onResourceReceived.Invoke();
             CheckBuld();
             return true;
         }

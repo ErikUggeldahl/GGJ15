@@ -7,10 +7,10 @@ public class WallDetecter : MonoBehaviour {
 
 	void OnTriggerEnter(Collider other)
 	{
-		Wall wall = other.GetComponent<Wall>();
-		if (other.gameObject.layer == LayerMask.NameToLayer("Building")) 
+		Building building = other.GetComponent<Building>();
+		if (building != null && building.CurrentBuildingState == Building.BuildingState.Finished) 
 		{
-			aiMovement.StructureToDestroy = wall;
+			aiMovement.StructureToDestroy = building;
 		}
 	}
 }
