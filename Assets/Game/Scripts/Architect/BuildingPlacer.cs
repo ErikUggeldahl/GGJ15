@@ -31,9 +31,9 @@ public class BuildingPlacer : MonoBehaviour
     private Transform currentPreview;
     private GameObject currentToBuild;
 
-    private int groundLayer;
+    private int groundLayerMask;
+    private int buildingLayerMask;
 
-    private BuildingType currentBuildingType = BuildingType.Wall;
     private bool isBuilding = false;
 
     void Start()
@@ -46,7 +46,8 @@ public class BuildingPlacer : MonoBehaviour
         towerPreview = ((GameObject)Instantiate(towerPreviewObj)).transform;
         towerPreview.gameObject.SetActive(false);
 
-        groundLayer = LayerMask.NameToLayer("Ground");
+        groundLayerMask = 1 << LayerMask.NameToLayer("Ground");
+        buildingLayerMask = 1 << LayerMask.NameToLayer("Building");
     }
 
     public void StartBuildingWall()
@@ -63,7 +64,6 @@ public class BuildingPlacer : MonoBehaviour
     {
         stun.DisableStunning();
 
-        currentBuildingType = buildingType;
         isBuilding = true;
 
         UpdatePreview(buildingType);
@@ -79,9 +79,14 @@ public class BuildingPlacer : MonoBehaviour
 
     void Update()
     {
-        if (!isBuilding)
-            return;
+        if (isBuilding)
+            CastBuild();
+        else
+            CastCancel();
+    }
 
+    private void CastBuild()
+    {
         if (Input.GetMouseButtonDown(1))
         {
             StopBuilding();
@@ -91,7 +96,7 @@ public class BuildingPlacer : MonoBehaviour
         RaycastHit hitInfo;
         var mouseRay = sceneCamera.ScreenPointToRay(Input.mousePosition);
 
-        var isHit = Physics.Raycast(mouseRay, out hitInfo, float.PositiveInfinity, 1 << groundLayer);
+        var isHit = Physics.Raycast(mouseRay, out hitInfo, float.PositiveInfinity, groundLayerMask);
 
         if (!isHit)
             return;
@@ -115,7 +120,33 @@ public class BuildingPlacer : MonoBehaviour
         }
     }
 
-    void UpdatePreview(BuildingType buildingType)
+    private void CastCancel()
+    {
+        if (!Input.GetMouseButtonDown(1))
+            return;
+
+        RaycastHit hitInfo;
+        var mouseRay = sceneCamera.ScreenPointToRay(Input.mousePosition);
+
+        var isHit = Physics.Raycast(mouseRay, out hitInfo, float.PositiveInfinity, buildingLayerMask);
+
+        if (!isHit)
+            return;
+
+        Building building = hitInfo.transform.GetComponent<Building>();
+        if (building == null)
+        {
+            Debug.LogWarning("No building script on object to cancel.");
+            return;
+        }
+
+        if (building.CurrentBuildingState != Building.BuildingState.UnderConstruction)
+            return;
+
+        building.Cancel();
+    }
+
+    private void UpdatePreview(BuildingType buildingType)
     {
         switch (buildingType)
         {

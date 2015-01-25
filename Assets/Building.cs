@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public class Building : MonoBehaviour
+public abstract class Building : MonoBehaviour
 {
     public enum BuildingState
     {
@@ -10,7 +10,8 @@ public class Building : MonoBehaviour
         Finished
     }
 
-    public BuildingState CurrentBuildingState = BuildingState.UnderConstruction;
+    private BuildingState currentBuildingState = BuildingState.UnderConstruction;
+    public BuildingState CurrentBuildingState { get { return currentBuildingState; } }
 
     public Material UnderConstructionMaterial;
     public Material FinishedMaterial;
@@ -30,18 +31,29 @@ public class Building : MonoBehaviour
     {
         if (CurrentBuildingState == BuildingState.UnderConstruction)
         {
-            if(currentWood >= WoodRequired && currentStone >= StoneRequired)
+            if (currentWood >= WoodRequired && currentStone >= StoneRequired)
             {
                 ConstructBuilding();
             }
         }
     }
 
+    public void Cancel()
+    {
+        if (currentBuildingState != BuildingState.UnderConstruction)
+        {
+            Debug.LogWarning("Attempting to cancel a completed building.");
+            return;
+        }
+
+        Destroy(gameObject);
+    }
+
     protected virtual void ConstructBuilding()
     {
-        CurrentBuildingState = BuildingState.Finished;
+        currentBuildingState = BuildingState.Finished;
 
-        foreach(GameObject go in BuildingRenderObjects)
+        foreach (GameObject go in BuildingRenderObjects)
         {
             go.renderer.material = FinishedMaterial;
         }
@@ -49,9 +61,9 @@ public class Building : MonoBehaviour
 
     public virtual bool AddResource(HarvestableResource aResource)
     {
-        if(aResource.gameObject.GetComponent<Tree>() != null)
+        if (aResource.gameObject.GetComponent<Tree>() != null)
         {
-            if(WoodRequired > 0)
+            if (WoodRequired > 0)
             {
                 Destroy(aResource.gameObject);
                 currentWood++;
