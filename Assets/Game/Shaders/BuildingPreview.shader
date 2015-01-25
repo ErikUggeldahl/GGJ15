@@ -22,6 +22,8 @@ Shader "Custom/BuildingPreview"
         _RimPower ("RimLight Power",float) = 1.0
         _RimMultiply ("RimLight Multiply", float) = 0.2
         _RimBias ("RimLight Bias", float) = 0
+		_BaseTransparency ("Base Transparency", float) = 1
+		_Transparency ("Transparency", float) = 1
     }
 	SubShader 
 	{
@@ -106,6 +108,9 @@ Shader "Custom/BuildingPreview"
         float _RimPower;
         float _RimMultiply;
         float _RimBias;
+
+		float _Transparency;
+		float _BaseTransparency;
 		
 		//----------------------------------------------------------
 		//--------------------- Surface Shader ---------------------
@@ -142,7 +147,7 @@ Shader "Custom/BuildingPreview"
 	        //rim *= max(dot( float3(0,1,0), worldNormal), 0);
 	        rim *= clamp((dot( float3(0,1,0), worldNormal) * 0.5) + 0.5 + 0.2,0,1);
 	        o.Emission += rim * o.Albedo.rgb * cubeAmbient;
-	        o.Alpha = clamp(0.4f + rim,0,1);
+	        o.Alpha = clamp(0.4f + rim,0,1) * _Transparency * _BaseTransparency;
             
 		}
 		ENDCG

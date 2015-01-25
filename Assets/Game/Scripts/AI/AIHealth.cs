@@ -3,6 +3,8 @@ using System.Collections;
 
 public class AIHealth : BaseHealth
 {
+    public GameObject GhostPrefab = null;
+
     void Start()
     {
         SetStartingHP();
@@ -15,6 +17,9 @@ public class AIHealth : BaseHealth
         base.Die();
 
         AICollection.Instance.AllSpawns.Remove(this.gameObject);
+
+        Instantiate(GhostPrefab, transform.position, transform.rotation);
+
         Destroy(gameObject);
     }
 

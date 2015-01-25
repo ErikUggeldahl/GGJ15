@@ -12,7 +12,7 @@ public class Tower : Building
 
 	public Transform TurretObject;
 
-    public GameObject projectilePrefab;
+    public Projectile projectilePrefab;
 
     public Transform Target;
 
@@ -73,7 +73,10 @@ public class Tower : Building
         refireCounter = fireDelay;
 
         if (projectilePrefab != null)
-            Instantiate(projectilePrefab, new Vector3(transform.position.x, 1, transform.position.z), Quaternion.LookRotation(-TurretObject.transform.forward));
+        {
+            Projectile newProjectile = Instantiate(projectilePrefab, new Vector3(transform.position.x, 1, transform.position.z), Quaternion.LookRotation(-TurretObject.transform.forward)) as Projectile;
+            newProjectile.Initialize(DamageSource.Architect,this);
+        }
     }
 
 	void OrientTurret()
