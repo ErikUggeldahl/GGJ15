@@ -13,7 +13,7 @@ public class AIInteraction : MonoBehaviour {
 
 	public void Attack(BaseHealth target)
 	{
-		transform.LookAt(new Vector3 (target.transform.position.x, transform.position.y, target.transform.position.z));
+		//transform.LookAt(new Vector3 (target.transform.position.x, transform.position.y, target.transform.position.z));
 		//StartCoroutine(DashForward());
 		target.TakeDamage(damage, transform);
 		StartCoroutine(delayAttack(target));
@@ -50,3 +50,4 @@ public class AIInteraction : MonoBehaviour {
 		}
 	}
 }
+	
