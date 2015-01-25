@@ -148,6 +148,9 @@ public class BuildingPlacer : MonoBehaviour
 
     private void UpdatePreview(BuildingType buildingType)
     {
+        if (currentPreview != null)
+            currentPreview.gameObject.SetActive(false);
+
         switch (buildingType)
         {
             case BuildingType.Wall:
