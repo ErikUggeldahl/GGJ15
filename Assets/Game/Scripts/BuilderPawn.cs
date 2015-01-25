@@ -114,6 +114,13 @@ public class BuilderPawn : MonoBehaviour
         }
 
         UpdateBuilderHop();
+
+
+        Quaternion targetRotation = Quaternion.identity;
+        if (!builderHealthScript.IsAlive)
+            targetRotation = Quaternion.LookRotation(Vector3.forward, Vector3.right);
+
+        MeshObject.transform.localRotation = Quaternion.RotateTowards(MeshObject.transform.localRotation, targetRotation, 360 * Time.deltaTime);
     }
 
     public float hopVelocity = 10.0f;
