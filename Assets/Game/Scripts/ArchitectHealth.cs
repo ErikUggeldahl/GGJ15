@@ -4,12 +4,14 @@ using System.Collections;
 public class ArchitectHealth : BaseHealth {
 
 	// Use this for initialization
-	void Start () {
-	
+	void Start () 
+	{
+		SetStartingHP();
 	}
-	
-	// Update is called once per frame
-	void Update () {
-	
+
+	protected override void Die ()
+	{
+		base.Die ();
+		Game.Instance.GameOver();
 	}
 }

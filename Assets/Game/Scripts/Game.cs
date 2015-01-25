@@ -27,6 +27,8 @@ public class Game : MonoBehaviour
     public GameObject architectSpawnLocation;
     public GameObject[] builderSpawnLocations;
 
+	public GameObject Menu;
+
     void Awake()
     {
         Instance = this;
@@ -34,6 +36,9 @@ public class Game : MonoBehaviour
 
 	void Start ()
     {
+		// Hide menu
+		Menu.SetActive(false);
+
         // ** Create architect player ** //
         GameObject newArchitect = GameObject.Instantiate(ArchitectPrefab, architectSpawnLocation.transform.position, Quaternion.identity) as GameObject;
         ArchitectPawn = newArchitect.GetComponent<ArchitectPawn>();
@@ -60,11 +65,35 @@ public class Game : MonoBehaviour
         }
 	}
 
-    void Update()
-    {
-        if(ArchitectPawn.IsDead)
-        {
-            CurrentGameState = GameState.GameOver;
-        }
-    }
+	void LateUpdate()
+	{
+		if (Input.GetKeyDown (KeyCode.Escape))
+			Exit();
+	}
+
+	public void GameOver()
+	{
+		CurrentGameState = GameState.GameOver;
+		Menu.SetActive(true);
+	}
+
+	public void Retry()
+	{
+		AICollection aiList = GetComponent<AICollection>();
+
+		foreach (GameObject ai in aiList.AllSpawns)
+			Destroy (ai);
+
+		foreach(BuilderPawn BuilderPawn in BuilderPawns)
+			Destroy(BuilderPawn.gameObject);
+
+		Destroy(ArchitectPawn.gameObject);
+
+		Start();
+	}
+
+	public void Exit()
+	{
+		Application.Quit();
+	}
 }

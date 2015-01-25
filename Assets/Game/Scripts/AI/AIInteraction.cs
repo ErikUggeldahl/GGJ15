@@ -7,20 +7,9 @@ public class AIInteraction : MonoBehaviour {
 	public float meleeAttackRange;
 	public float attackDelay;
 	public int damage;
+
 	bool canAttack = false;
 	// Use this for initialization
-	void Start () 
-	{
-	
-	}
-
-//	private IEnumerator DashForward()
-//	{
-//		Vector3 initPos = transform.position;
-//		transform.Translate(transform.forward * 0.2f);
-//		yield return new WaitForSeconds(0.5f);
-//		transform.position = initPos;
-//	}
 
 	public void Attack(BaseHealth target)
 	{
