@@ -5,6 +5,8 @@ using MPInput;
 
 public class BuilderInput : MonoBehaviour
 {
+    float pingTime = 0.0f;
+
     private MP_InputDeviceInfo inputDeviceInfo = null;
     public MP_InputDeviceInfo InputDeviceInfo { get { return inputDeviceInfo; } }
 
@@ -27,6 +29,8 @@ public class BuilderInput : MonoBehaviour
 
     public void Update()
     {
+        pingTime -= Time.deltaTime;
+
         // Poll input
         xAxisMove = MP_Input.GetAxis("MoveHorizontal", inputDeviceInfo);
         yAxisMove = MP_Input.GetAxis("MoveVertical", inputDeviceInfo);
@@ -35,6 +39,25 @@ public class BuilderInput : MonoBehaviour
         
         isFireButtonPressed = MP_Input.GetButton("BuilderFire", inputDeviceInfo);
         isPickupButtonPressed = MP_Input.GetButtonDown("Pickup/Drop", inputDeviceInfo);
+
+        if (MP_Input.GetButtonDown("Ping", inputDeviceInfo) && CanPing())
+        {
+            Ping();
+        }
+    }
+
+    bool CanPing()
+    {
+        return pingTime <= 0;
+    }
+
+    void Ping()
+    {
+        Ping newPint = Instantiate(pawn.pingPrefab, transform.position + Vector3.up * 0.5f, Quaternion.identity) as Ping;
+        pingTime = newPint.lifetime;
+        newPint.transform.SetParent(transform);
+        // Force update right away
+        newPint.Update();
     }
 
     public void FixedUpdate()

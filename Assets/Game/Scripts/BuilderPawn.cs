@@ -6,6 +6,8 @@ using MPInput;
 
 public class BuilderPawn : MonoBehaviour
 {
+    public Ping pingPrefab = null;
+
     public GameObject SpearPrefab;
 
     public GameObject MeshObject;
