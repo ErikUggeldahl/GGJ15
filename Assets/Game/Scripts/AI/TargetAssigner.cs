@@ -43,7 +43,7 @@ public class TargetAssigner : MonoBehaviour {
 
 	public void PlayerDetected(Transform player)
 	{
-		if (listOfPlayers.Count == 0 || player.tag == "King") 
+		if (listOfPlayers.Count == 0 || player.tag == "Architect") 
 		{
 			Debug.Log("New Target is: " + player);
 			movement.Target = player;
@@ -66,7 +66,7 @@ public class TargetAssigner : MonoBehaviour {
 		}
 
 		// If the currently found target is leaving, find a new one
-		if (player.GetInstanceID() == movement.Target.GetInstanceID() && movement.Target.tag != "King")
+		if (player.GetInstanceID() == movement.Target.GetInstanceID() && movement.Target.tag != "Architect")
 			movement.Target = NearestTransformFromSelf(listOfPlayers);
 
 		Debug.Log("Player Removed");

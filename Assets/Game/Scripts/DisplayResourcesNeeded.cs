@@ -95,7 +95,7 @@ public class DisplayResourcesNeeded : MonoBehaviour {
 			woodUI.transform.position = anchors[count].position;
 			count++;
 		}
-		else if (stoneUI != null) 
+		if (stoneUI != null) 
 		{
 			stoneUI.transform.position = anchors[count].position;
 			count++;
