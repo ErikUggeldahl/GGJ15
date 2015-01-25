@@ -57,11 +57,14 @@ public class HarvestableResource : MonoBehaviour
 
     protected virtual void OnTriggerEnter(Collider aCollider)
     {
-        if (aCollider.gameObject.GetComponent<BuilderPawn>() != null)
+        if (!IsHeld)
         {
-            BuilderPawn builderPawn = aCollider.gameObject.GetComponent<BuilderPawn>();
+            if (aCollider.gameObject.GetComponent<BuilderPawn>() != null)
+            {
+                BuilderPawn builderPawn = aCollider.gameObject.GetComponent<BuilderPawn>();
 
-            builderPawn.NearbyResources.Add(this);
+                builderPawn.NearbyResources.Add(this);
+            }
         }
     }
 

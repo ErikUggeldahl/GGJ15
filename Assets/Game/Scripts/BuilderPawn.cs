@@ -206,8 +206,8 @@ public class BuilderPawn : MonoBehaviour
 
                     for (int i = 1; i < NearbyResources.Count; i++)
                     {
-                        float smallestDistance = Vector3.Distance(nearestResource.transform.position, this.transform.position);
-                        float nextDistance = Vector3.Distance(NearbyResources[i].transform.position, this.transform.position);
+                            float smallestDistance = Vector3.Distance(nearestResource.transform.position, this.transform.position);
+                            float nextDistance = Vector3.Distance(NearbyResources[i].transform.position, this.transform.position);
 
                         if (nextDistance < smallestDistance && !nearestResource.IsHeld)
                         {
@@ -218,6 +218,7 @@ public class BuilderPawn : MonoBehaviour
                     if (nearestResource != null)
                     {
                         nearestResource.Pickup(this);
+                        NearbyResources.Remove(nearestResource);
                         CurrentHeldResource = nearestResource;
                     }
                 }

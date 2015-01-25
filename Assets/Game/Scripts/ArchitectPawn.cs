@@ -44,6 +44,7 @@ public class ArchitectPawn : Building
                 GameObject newSegment = Instantiate(totemSegmentPrefab) as GameObject;
 
                 newSegment.transform.SetParent(this.transform);
+                newSegment.transform.localScale = Vector3.one;
                 newSegment.transform.localPosition = new Vector3(0, i, 0);
 
                 totemSegments.Add(newSegment.transform);
