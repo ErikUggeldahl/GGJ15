@@ -164,38 +164,32 @@ public class BuilderPawn : MonoBehaviour
     {
         if (IsHoldingItem)
         {
-            if (NearbyBuildings.Count > 0)
+            GridPosition currentPosition = GameGrid.Instance.WorldToGridPosition(CarryPoint.position);
+            GridSquare gridSquare = GameGrid.Instance.GetGridSquare(currentPosition);
+
+            if (gridSquare.ResidingObject == null)
             {
-                Building nearestBuilding = NearbyBuildings[0];
+                CurrentHeldResource.Drop();
+                CurrentHeldResource = null;
+                return;
+            }
 
-                for (int i = 1; i < NearbyBuildings.Count; i++)
-                {
-                    float smallestDistance = Vector3.Distance(nearestBuilding.transform.position, this.transform.position);
-                    float nextDistance = Vector3.Distance(NearbyResources[i].transform.position, this.transform.position);
+            Building hoveredBuilding = gridSquare.ResidingObject.GetComponent<Building>();
 
-                    if (nextDistance < smallestDistance && nearestBuilding.CurrentBuildingState == Building.BuildingState.UnderConstruction)
-                    {
-                        nearestBuilding = NearbyBuildings[i];
-                    }
-                }
-
-                if (nearestBuilding != null)
-                {
-                    NearbyResources.Remove(CurrentHeldResource);
-                    nearestBuilding.ConsumeResource(CurrentHeldResource);
-                    CurrentHeldResource = null;
-                }
+            if (hoveredBuilding != null)
+            {
+                if (hoveredBuilding.CurrentBuildingState == Building.BuildingState.Finished)
+                    return;
                 else
                 {
-                    CurrentHeldResource.Drop();
+                    // Building under construction
+                    NearbyResources.Remove(CurrentHeldResource);
+                    hoveredBuilding.ConsumeResource(CurrentHeldResource);
                     CurrentHeldResource = null;
                 }
             }
             else
-            {
-                CurrentHeldResource.Drop();
-                CurrentHeldResource = null;
-            }
+                return;
         }
     }
 

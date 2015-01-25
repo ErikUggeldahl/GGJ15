@@ -10,6 +10,9 @@ public abstract class Building : MonoBehaviour
         Finished
     }
 
+    private static List<Building> allBuildings = new List<Building>();
+    public static Building[] AllBuildings { get { return allBuildings.ToArray(); } }
+
     private BuildingState currentBuildingState = BuildingState.UnderConstruction;
     public BuildingState CurrentBuildingState { get { return currentBuildingState; } }
 
@@ -26,6 +29,37 @@ public abstract class Building : MonoBehaviour
 
     public int currentStone = 0;
     public int CurrentStone { get { return currentStone; } }
+
+    public static Building GetNearestBuilding (Vector3 point)
+    {
+        int closestIndex = -1;
+        float closestDistance = float.MaxValue;
+
+        for (int i = 0; i < allBuildings.Count; i++)
+        {
+            float currentDistance = (allBuildings[i].transform.position - point).magnitude;
+            if (currentDistance < closestDistance)
+            {
+                closestDistance = currentDistance;
+                closestIndex = i;
+            }
+        }
+
+        if (closestIndex >= 0)
+            return allBuildings[closestIndex];
+        else return null;
+    }
+
+
+    protected virtual void OnEnable()
+    {
+        allBuildings.Add(this);
+    }
+
+    protected virtual void OnDisable()
+    {
+        allBuildings.Remove(this);
+    }
 
     protected virtual void CheckBuld()
     {
