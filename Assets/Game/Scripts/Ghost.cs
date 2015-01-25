@@ -3,7 +3,8 @@ using System.Collections;
 
 public class Ghost : MonoBehaviour 
 {
-    public float ascendSpeed = 10.0f;
+    public float ascendSpeed = 1.0f;
+    public float ascendAcceleration = 5.0f;
     public float ascentTime = 2.0f;
     public float ascentTimeRemaining;
 
@@ -17,6 +18,8 @@ public class Ghost : MonoBehaviour
         ascentTimeRemaining -= Time.deltaTime;
         if (ascentTimeRemaining <= 0)
             Destroy(this.gameObject);
+
+        ascendSpeed += Time.deltaTime * ascendAcceleration;
 
         transform.position = transform.position + Vector3.up * ascendSpeed * Time.deltaTime;
 
