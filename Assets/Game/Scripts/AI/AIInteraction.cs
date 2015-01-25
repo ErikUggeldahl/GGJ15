@@ -6,6 +6,7 @@ public class AIInteraction : MonoBehaviour {
 	public AIMovement movement;
 	public float meleeAttackRange;
 	public float attackDelay;
+	public int damage;
 	bool canAttack = false;
 	// Use this for initialization
 	void Start () 
@@ -13,14 +14,23 @@ public class AIInteraction : MonoBehaviour {
 	
 	}
 
+//	private IEnumerator DashForward()
+//	{
+//		Vector3 initPos = transform.position;
+//		transform.Translate(transform.forward * 0.2f);
+//		yield return new WaitForSeconds(0.5f);
+//		transform.position = initPos;
+//	}
+
 	public void Attack(BaseHealth target)
 	{
 		transform.LookAt(new Vector3 (target.transform.position.x, transform.position.y, target.transform.position.z));
-		target.TakeDamage(1);
+		//StartCoroutine(DashForward());
+		target.TakeDamage(damage);
 		StartCoroutine(delayAttack(target));
 	}
 
-	public IEnumerator delayAttack(BaseHealth target)
+	IEnumerator delayAttack(BaseHealth target)
 	{
 		if (canAttack) 
 		{
@@ -36,7 +46,6 @@ public class AIInteraction : MonoBehaviour {
 		}
 		else if (target.IsAlive)
 			movement.Target = target.transform;
-
 	}
 
 	void Update()
@@ -48,6 +57,5 @@ public class AIInteraction : MonoBehaviour {
 			else
 				canAttack = false;
 		}
-		//Debug.Log ("attack is: " + canAttack);
 	}
 }

@@ -18,11 +18,6 @@ public class TargetAssigner : MonoBehaviour {
 	public SphereCollider boredSphere;
 	internal List<Transform> listOfPlayers = new List<Transform>();
 
-	void Awake()
-	{
-		// By default, go towards the architect
-
-	}
 	// Use this for initialization
 	void Start ()
 	{

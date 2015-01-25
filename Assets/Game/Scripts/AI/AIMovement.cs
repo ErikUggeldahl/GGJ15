@@ -18,6 +18,18 @@ public class AIMovement : MonoBehaviour
 		}
 	}
 
+	Wall wallToDestroy;
+	public Wall WallToDestroy
+	{
+		get { return wallToDestroy; }
+		set 
+		{
+			wallToDestroy = value;
+			canMove = false;
+			StartCoroutine(ClearWay(wallToDestroy));
+		}
+	}
+
 	float defaultdrag;
 	float defaultAngularDrag;
 
@@ -69,6 +81,18 @@ public class AIMovement : MonoBehaviour
 		rigidbody.angularDrag = defaultAngularDrag;
 	}
 
+	IEnumerator ClearWay(Wall wall)
+	{
+		BaseHealth wallHealth = wall.GetComponent<BaseHealth>();
+		AIInteraction aiInteract = GetComponent<AIInteraction>();
+		while (wallHealth.IsAlive) 
+		{
+			wallHealth.TakeDamage(aiInteract.damage);
+			yield return new WaitForSeconds(aiInteract.attackDelay);
+		}
+		canMove = true;
+	}
+
     public void StartStun(float time, float slowdownPercentage)
     {
         StartCoroutine(Stun(time, slowdownPercentage));
@@ -76,6 +100,9 @@ public class AIMovement : MonoBehaviour
 
 	private IEnumerator Stun(float time, float slowdownPercentage)
 	{
+		if (slowdownPercentage == 0)
+			rigidbody.velocity = Vector3.zero;
+
 		maxSpeed = slowdownPercentage * maxSpeed;
 		yield return new WaitForSeconds(time);
 		maxSpeed = defaultMaxSpeed;
