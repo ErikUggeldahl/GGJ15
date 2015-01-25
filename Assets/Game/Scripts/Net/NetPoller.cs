@@ -101,12 +101,22 @@ public class NetPoller : MonoBehaviour
 	{
 		var request = new WWW (URL);
 		yield return request;
-		
-		var result = request.text;
-		char[] splitStrs = {' '};
-		var resultSplit = result.Split(splitStrs);
-		
-		currentGoodVotes = int.Parse(resultSplit[1]);
-		currentBadVotes = int.Parse(resultSplit[3]);
+		try
+		{
+			if (request.isDone)
+			{
+
+				var result = request.text;
+				char[] splitStrs = { ' ' };
+				var resultSplit = result.Split(splitStrs);
+
+				currentGoodVotes = int.Parse(resultSplit[1]);
+				currentBadVotes = int.Parse(resultSplit[3]);
+			}
+		}
+		catch (System.Exception e)
+		{
+			Debug.LogError("Net error:" + e.Message);
+		}
 	}
 }
