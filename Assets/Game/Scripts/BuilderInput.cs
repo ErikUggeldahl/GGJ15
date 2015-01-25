@@ -11,10 +11,10 @@ public class BuilderInput : MonoBehaviour
     private BuilderPawn pawn = null;
     public BuilderPawn Pawn { get { return pawn; } }
 
-    private float xAxisMove = 0.0f;
-    private float yAxisMove = 0.0f;
-    private float xAxisLook = 0.0f;
-    private float yAxisLook = 0.0f;
+    public float xAxisMove = 0.0f;
+    public float yAxisMove = 0.0f;
+    public float xAxisLook = 0.0f;
+    public float yAxisLook = 0.0f;
 
     private bool isPickupButtonPressed = false;
     private bool isFireButtonPressed = false;

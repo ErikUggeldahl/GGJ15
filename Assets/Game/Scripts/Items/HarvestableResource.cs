@@ -38,7 +38,8 @@ public class HarvestableResource : MonoBehaviour
     {
         if (isHeld)
         {
-            this.transform.position = currentOwner.transform.position;
+            this.transform.position = currentOwner.CarryPoint.position;
+            this.transform.rotation = currentOwner.CarryPoint.rotation;
         }
     }
 

@@ -10,6 +10,8 @@ public class BuilderPawn : MonoBehaviour
 
     public GameObject MeshObject;
 
+    public Transform CarryPoint;
+
     public float FireRate = 0.5f;
 
     public float MovementDrag = 2.0f;
@@ -34,7 +36,6 @@ public class BuilderPawn : MonoBehaviour
 
     public List<HarvestableResource> NearbyResources = new List<HarvestableResource>();
     public List<Building> NearbyBuildings = new List<Building>();
-
 
     public Material[] builderMaterials;
     public Mesh[] builderMeshes;
@@ -68,6 +69,34 @@ public class BuilderPawn : MonoBehaviour
         {
             movementPenaltyPercent = 0.0f;
         }
+        UpdateBuilderHop();
+    }
+
+    public float hopVelocity = 10.0f;
+    public float hopGravity = -9.8f;
+
+    public float currentHopVelocity = 0.0f;
+
+    void UpdateBuilderHop()
+    {
+        if (MeshObject.transform.localPosition.y < 0)
+        {
+            if (BuilderMovementScript.xAxisMove != 0 || BuilderMovementScript.yAxisMove != 0)
+            {
+                currentHopVelocity = hopVelocity;
+            }
+            else
+            {
+                currentHopVelocity = 0;
+                MeshObject.transform.localPosition = Vector3.Scale(MeshObject.transform.localPosition, new Vector3(1, 0, 1));
+            }
+        }
+        else
+        {
+            currentHopVelocity -= Time.deltaTime * hopGravity;
+        }
+
+        MeshObject.transform.localPosition = MeshObject.transform.localPosition + Vector3.up * currentHopVelocity * Time.deltaTime;
     }
 
     public void Initialize(MP_InputDeviceInfo aInputDeviceInfo)
