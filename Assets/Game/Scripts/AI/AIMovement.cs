@@ -16,7 +16,7 @@ public class AIMovement : MonoBehaviour
 		{ 
 			target = value; 
 			StopCoroutine("Moving");
-			StartCoroutine(Moving());
+			StartCoroutine("Moving");
 		}
 	}
 
@@ -85,7 +85,6 @@ public class AIMovement : MonoBehaviour
 		{
 			OnMovementFinish(target);
 		}
-
 
 		StartCoroutine(SlowDown(slowDownTime, slowDownDragRate));
 	}

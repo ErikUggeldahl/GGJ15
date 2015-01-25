@@ -271,7 +271,7 @@ public class BuilderPawn : MonoBehaviour
 
             yield return new WaitForSeconds(aWeaponFireAnimationTime);
 
-        } while (IsFiring == true);
+        } while (IsFiring == true && builderHealthScript.IsAlive);
 
         isFiringCoroutineActive = false;
     }
