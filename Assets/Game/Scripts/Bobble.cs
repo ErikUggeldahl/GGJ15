@@ -16,7 +16,7 @@ public class Bobble : MonoBehaviour
     public void ApplyImpulse(Vector3 Direction)
     {
         Vector3 localDirection = MeshTransform.InverseTransformDirection(Direction);
-        currentVelocity += new Vector2(localDirection.z, -localDirection.x) * 200;
+        currentVelocity += new Vector2(localDirection.z, -localDirection.x) * 400;
     }
 
     void Update()
@@ -28,7 +28,7 @@ public class Bobble : MonoBehaviour
 
 
         // Spring
-        currentVelocity += (targetVector - currentPosition) * Time.deltaTime * 100;
+        currentVelocity += (targetVector - currentPosition) * Time.deltaTime * 200;
 
         // Drag
         currentVelocity -= currentVelocity * Time.deltaTime * 8;

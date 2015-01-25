@@ -268,7 +268,7 @@ public class BuilderPawn : MonoBehaviour
 
         do
         {
-            GameObject projectile = GameObject.Instantiate(SpearPrefab, this.transform.position, this.transform.rotation) as GameObject;
+            GameObject projectile = GameObject.Instantiate(SpearPrefab, this.transform.position + Vector3.up * 0.5f, this.transform.rotation) as GameObject;
             projectile.GetComponent<Projectile>().Initialize(DamageSource.Builder, this);
 
             yield return new WaitForSeconds(aWeaponFireAnimationTime);
