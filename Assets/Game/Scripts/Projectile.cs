@@ -13,8 +13,7 @@ public enum DamageSource
 public class Projectile : MonoBehaviour
 {
     public int Damage;
-    public int Drag;
-    public int MoveForce;
+    public int ProjectileSpeed;
     public int DestroyDistance;
 
     protected DamageSource currentSource = DamageSource.None;
@@ -29,6 +28,11 @@ public class Projectile : MonoBehaviour
         sourceObject = aSourceObject;
     }
 
+    void Start()
+    {
+        this.gameObject.rigidbody.velocity = this.transform.forward * ProjectileSpeed;
+    }
+
     protected virtual void Update()
     {
         if(Vector3.Distance(this.transform.position, sourceObject.transform.position) >= DestroyDistance)
@@ -37,10 +41,4 @@ public class Projectile : MonoBehaviour
         }
     }
 	
-	// Update is called once per frame
-	protected virtual void FixedUpdate ()
-    {
-        this.gameObject.rigidbody.drag = Drag;
-        this.gameObject.rigidbody.AddForce(this.transform.forward * MoveForce);
-	}
 }

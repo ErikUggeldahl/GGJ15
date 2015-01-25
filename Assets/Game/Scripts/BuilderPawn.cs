@@ -8,6 +8,8 @@ public class BuilderPawn : MonoBehaviour
 {
     public GameObject SpearPrefab;
 
+    public float FireRate = 0.5f;
+
     public float MovementDrag = 2.0f;
     public float MovementForce = 20.0f;
     public float LookForce = 5.0f;
@@ -79,7 +81,7 @@ public class BuilderPawn : MonoBehaviour
             if (!IsFiring && !isFiringCoroutineActive)
             {
                 isFiring = true;
-                StartCoroutine(FiringCycle(1.5f));
+                StartCoroutine(FiringCycle(FireRate));
             }
         }
     }
@@ -142,7 +144,7 @@ public class BuilderPawn : MonoBehaviour
                 if (nearestBuilding != null)
                 {
                     NearbyResources.Remove(CurrentHeldResource);
-                    nearestBuilding.AddResource(CurrentHeldResource);
+                    nearestBuilding.ConsumeResource(CurrentHeldResource);
                     CurrentHeldResource = null;
                 }
                 else

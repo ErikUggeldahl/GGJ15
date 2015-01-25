@@ -27,7 +27,7 @@ public abstract class Building : MonoBehaviour
     public int currentStone = 0;
     public int CurrentStone { get { return currentStone; } }
 
-    protected virtual void Update()
+    protected virtual void CheckBuld()
     {
         if (CurrentBuildingState == BuildingState.UnderConstruction)
         {
@@ -59,40 +59,27 @@ public abstract class Building : MonoBehaviour
         }
     }
 
-    public virtual bool AddResource(HarvestableResource aResource)
+    public virtual bool ConsumeResource(HarvestableResource aResource)
     {
+        if (currentBuildingState == BuildingState.Finished || WoodRequired <= 0 || StoneRequired <= 0)
+            return false;
+
         if (aResource.gameObject.GetComponent<Tree>() != null)
         {
-            if (WoodRequired > 0)
-            {
-                Destroy(aResource.gameObject);
-                currentWood++;
-
-                return true;
-            }
-            else
-            {
-                return false;
-            }
+            Destroy(aResource.gameObject);
+            currentWood++;
+            CheckBuld();
+            return true;
         }
         else if (aResource.gameObject.GetComponent<Rock>() != null)
         {
-            if (StoneRequired > 0)
-            {
-                Destroy(aResource.gameObject);
-                currentStone++;
+            Destroy(aResource.gameObject);
+            currentStone++;
+            CheckBuld();
+            return true;
+        }
 
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
-        else
-        {
-            return false;
-        }
+        return false;
     }
 
     protected virtual void OnTriggerEnter(Collider aCollider)
