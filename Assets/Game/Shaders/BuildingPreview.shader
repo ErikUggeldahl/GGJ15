@@ -25,7 +25,7 @@ Shader "Custom/BuildingPreview"
     }
 	SubShader 
 	{
-		Tags { "RenderType"="Opaque" }
+		Tags { "RenderType"="Transparent" }
 		LOD 200
 		
 		CGPROGRAM
@@ -142,7 +142,7 @@ Shader "Custom/BuildingPreview"
 	        //rim *= max(dot( float3(0,1,0), worldNormal), 0);
 	        rim *= clamp((dot( float3(0,1,0), worldNormal) * 0.5) + 0.5 + 0.2,0,1);
 	        o.Emission += rim * o.Albedo.rgb * cubeAmbient;
-	        o.Alpha = 0.1f + rim;
+	        o.Alpha = clamp(0.4f + rim,0,1);
             
 		}
 		ENDCG
