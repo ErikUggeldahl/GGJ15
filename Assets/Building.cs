@@ -105,16 +105,26 @@ public abstract class Building : MonoBehaviour
         {
             Destroy(aResource.gameObject);
             currentWood++;
-			onResourceReceived.Invoke();
             CheckBuld();
+
+			if(onResourceReceived != null)
+			{
+				onResourceReceived();
+			}
+
             return true;
         }
         else if (aResource.gameObject.GetComponent<Rock>() != null)
         {
             Destroy(aResource.gameObject);
             currentStone++;
-			onResourceReceived.Invoke();
             CheckBuld();
+
+			if(onResourceReceived != null)
+			{
+				onResourceReceived();
+			}
+
             return true;
         }
 
