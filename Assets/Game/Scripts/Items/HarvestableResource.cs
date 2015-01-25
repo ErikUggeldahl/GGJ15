@@ -26,7 +26,7 @@ public class HarvestableResource : MonoBehaviour
         }
     }
 
-	void Start()
+	protected virtual void Start()
 	{
 		float newScale = Random.Range(1.0f - (sizeVariance/2),1.0f + (sizeVariance/2));
 		transform.localScale = Vector3.one * newScale;

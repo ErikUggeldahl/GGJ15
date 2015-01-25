@@ -4,6 +4,8 @@ using System.Collections;
 public class AIMovement : MonoBehaviour 
 {
 
+    public GameObject frozenMesh;
+
 	const float AI_TARGET_TRESHOLD = 3.2f;
 	
 	Transform target;
@@ -112,6 +114,7 @@ public class AIMovement : MonoBehaviour
     public void StartStun(float time, float slowdownPercentage)
     {
         StartCoroutine(Stun(time, slowdownPercentage));
+        frozenMesh.SetActive(true);
     }
 
 	private IEnumerator Stun(float time, float slowdownPercentage)
@@ -124,6 +127,7 @@ public class AIMovement : MonoBehaviour
 		yield return new WaitForSeconds(time);
 		stunSlowFactor = 1f;
 		isStunned = false;
+        frozenMesh.SetActive(false);
 	}
 
 	public static float XZdistanceBetweenTwoVec3(Vector3 location1, Vector3 location2)
