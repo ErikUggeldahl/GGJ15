@@ -15,7 +15,7 @@ public class AIInteraction : MonoBehaviour {
 	{
 		transform.LookAt(new Vector3 (target.transform.position.x, transform.position.y, target.transform.position.z));
 		//StartCoroutine(DashForward());
-		target.TakeDamage(damage);
+		target.TakeDamage(damage, transform);
 		StartCoroutine(delayAttack(target));
 	}
 
@@ -45,6 +45,8 @@ public class AIInteraction : MonoBehaviour {
 				canAttack = true;
 			else
 				canAttack = false;
+
+			Debug.Log("attack is " + canAttack);
 		}
 	}
 }

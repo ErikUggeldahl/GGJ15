@@ -4,7 +4,7 @@ using System.Collections;
 public class AIMovement : MonoBehaviour 
 {
 
-	const float AI_TARGET_TRESHOLD = 1.2f;
+	const float AI_TARGET_TRESHOLD = 3.2f;
 	
 	Transform target;
 	public Transform Target
@@ -87,7 +87,7 @@ public class AIMovement : MonoBehaviour
 		AIInteraction aiInteract = GetComponent<AIInteraction>();
 		while (wallHealth.IsAlive) 
 		{
-			wallHealth.TakeDamage(aiInteract.damage);
+			wallHealth.TakeDamage(aiInteract.damage, transform);
 			yield return new WaitForSeconds(aiInteract.attackDelay);
 		}
 		canMove = true;

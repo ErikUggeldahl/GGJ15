@@ -9,7 +9,7 @@ public class SpearProjectile : Projectile
         {
             AIHealth ai = aCollider.gameObject.GetComponent<AIHealth>();
 
-            ai.TakeDamage(1);
+			ai.TakeDamage(1, sourceObject.transform);
 
             Destroy(this.gameObject);
         }

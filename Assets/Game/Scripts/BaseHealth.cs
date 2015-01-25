@@ -40,7 +40,7 @@ public class BaseHealth : MonoBehaviour
 
 	}
 	
-	public void TakeDamage(int aDamage)
+	public virtual void TakeDamage(int aDamage, Transform aggressor)
 	{
 		Debug.Log (gameObject.name + " Took " + aDamage + " of damage");
 		Health -= aDamage;
