@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 
 public class NetPoller : MonoBehaviour
@@ -11,6 +12,15 @@ public class NetPoller : MonoBehaviour
 	{
 		return instance;
 	}
+
+	[SerializeField]
+	Text resultText;
+
+	[SerializeField]
+	Animation textAnimator;
+
+	[SerializeField]
+	AnimationClip textAnimation;
 
 	public delegate void PolledResultHandler(int good, int bad);
 	public event PolledResultHandler Polled;
@@ -44,14 +54,47 @@ public class NetPoller : MonoBehaviour
 			int goodDelta = currentGoodVotes - totalGoodVotes;
 			int badDelta = currentBadVotes - totalBadVotes;
 
-			if (goodDelta > 0 || badDelta > 0)
-				Polled(goodDelta, badDelta);
+			int goodDifference = Mathf.Clamp(goodDelta - badDelta, 0, int.MaxValue);
+			int badDifference = Mathf.Clamp(badDelta - goodDelta, 0, int.MaxValue);
+
+			//Debug.Log("Delta: " + goodDelta + " : " + badDelta + "\n" + "Difference: " + goodDifference + " : " + badDifference);
+
+			if (goodDifference > 0 || badDifference > 0)
+				Polled(goodDifference, badDifference);
+
+			ShowResults(goodDifference, badDifference);
 
 			totalGoodVotes = currentGoodVotes;
 			totalBadVotes = currentBadVotes;
 
 			yield return new WaitForSeconds(POLL_INTERVAL);
 		}
+	}
+
+	void ShowResults(int good, int bad)
+	{
+		string winner;
+		int votes;
+		if (good > bad)
+		{
+			winner = "Trees";
+			votes = good;
+		}
+		else if (bad > good)
+		{
+			winner = "Bears";
+			votes = bad;
+		}
+		else
+		{
+			resultText.text = "";
+			return;
+		}
+
+		Debug.Log("Playing animation");
+
+		resultText.text = winner + " Win!\n" + votes + " more votes!";
+		textAnimator.Play();
 	}
 
 	IEnumerator ExecuteRequest()

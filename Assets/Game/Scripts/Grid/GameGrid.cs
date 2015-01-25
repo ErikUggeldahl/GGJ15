@@ -49,6 +49,7 @@ public class GameGrid : MonoBehaviour
     public float TreeClusterRadius = 10.0f;
 	public int NewTreeSpawnRadius = 15;
 	public int VotesPerTree = 10;
+	public int MaxVoteSpawn = 3;
 	private Transform treeParent;
 
     public Rock RockPrefab;
@@ -73,7 +74,7 @@ public class GameGrid : MonoBehaviour
 		int halfGridX = gridSizeX / 2;
 		int halfGridY = gridSizeY / 2;
 
-		int treesToSpawn = good / VotesPerTree;
+		int treesToSpawn = Mathf.Clamp(good / VotesPerTree, 0, MaxVoteSpawn);
 
 		for (int i = 0; i < treesToSpawn; i++)
 			PopulateTreeCluster(halfGridX - NewTreeSpawnRadius, halfGridX + NewTreeSpawnRadius, halfGridY - NewTreeSpawnRadius, halfGridY + NewTreeSpawnRadius, 1, 1, true);

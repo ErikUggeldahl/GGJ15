@@ -20,6 +20,7 @@ public class AISpawner : MonoBehaviour
     private const float SPAWN_ACCELERATION_FACTOR = 1.1f;
     public const int MAX_SPAWNS = 300;
 	private const int VOTES_PER_SPAWN = 25;
+	private const int MAX_VOTE_SPAWN = 2;
 
     private Transform spawnParent;
 
@@ -34,7 +35,7 @@ public class AISpawner : MonoBehaviour
 
 	void OnPollResult(int good, int bad)
 	{
-		int enemiesToSpawn = bad / VOTES_PER_SPAWN;
+		int enemiesToSpawn = Mathf.Clamp(bad / VOTES_PER_SPAWN, 0, MAX_VOTE_SPAWN);
 
 		for (int i = 0; i < enemiesToSpawn; i++)
 			SpawnEnemy();
@@ -47,9 +48,7 @@ public class AISpawner : MonoBehaviour
             var spawnCount = Mathf.Min(MAX_SPAWNS - AICollection.Instance.SpawnCount, numberToSpawn);
 
             for (int i = 0; i < spawnCount; i++)
-            {
 				SpawnEnemy();
-            }
 
             numberToSpawn *= SPAWN_ACCELERATION_FACTOR;
 
