@@ -26,6 +26,6 @@ public class AIHealth : BaseHealth
 	public override void TakeDamage (int aDamage, Transform aggressor)
 	{
 		base.TakeDamage (aDamage, aggressor);
-		GetComponent<AIMovement>().Target = aggressor;
+		//GetComponent<AIMovement>().Target = aggressor;
 	}
 }

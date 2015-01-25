@@ -4,8 +4,6 @@ using System.Collections;
 public class AIMovement : MonoBehaviour 
 {
 
-    public GameObject frozenMesh;
-
 	const float AI_TARGET_TRESHOLD = 3.2f;
 	
 	Transform target;
@@ -14,9 +12,10 @@ public class AIMovement : MonoBehaviour
 		get { return target; }
 		set 
 		{ 
+			canMove = true;
 			target = value; 
 			StopCoroutine("Moving");
-			StartCoroutine("Moving");
+			StartCoroutine(Moving());
 		}
 	}
 
@@ -40,10 +39,6 @@ public class AIMovement : MonoBehaviour
 	
 	public bool canMove = true;
 
-	private bool isStunned = false;
-	public bool IsStunned { get { return isStunned; } }
-	private float stunSlowFactor = 1f;
-
 	public float movingSpeed;
 
 	public float slowDownTime;
@@ -52,8 +47,6 @@ public class AIMovement : MonoBehaviour
 
 	public delegate void MovementFinishDel(Transform target);
 	public event MovementFinishDel OnMovementFinish;
-
-    public float turnSpeed = 50.0f;
 
 	// Use this for initialization
 	void Start () 
@@ -69,23 +62,13 @@ public class AIMovement : MonoBehaviour
 		{
 			if (target != null && canMove) 
 			{
-				//transform.LookAt(new Vector3(target.position.x, transform.position.y, target.position.z));
-
-                Quaternion targetRotation = Quaternion.LookRotation(new Vector3(target.position.x, transform.position.y, target.position.z) - transform.position);
-                Quaternion currentRotation = transform.rotation;
-                transform.rotation = Quaternion.RotateTowards(currentRotation, targetRotation, Time.deltaTime * turnSpeed * stunSlowFactor);
-
-                if (rigidbody.velocity.magnitude < maxSpeed * stunSlowFactor)
+				transform.LookAt(new Vector3(target.position.x, transform.position.y, target.position.z));
+				if (rigidbody.velocity.magnitude < maxSpeed)
 					rigidbody.AddForce(transform.forward * movingSpeed, ForceMode.VelocityChange );
 			}
 			yield return new WaitForFixedUpdate();
 		}
-
-		if(OnMovementFinish != null)
-		{
-			OnMovementFinish(target);
-		}
-
+		OnMovementFinish.Invoke(target);
 		StartCoroutine(SlowDown(slowDownTime, slowDownDragRate));
 	}
 
@@ -113,7 +96,6 @@ public class AIMovement : MonoBehaviour
     public void StartStun(float time, float slowdownPercentage)
     {
         StartCoroutine(Stun(time, slowdownPercentage));
-        frozenMesh.SetActive(true);
     }
 
 	private IEnumerator Stun(float time, float slowdownPercentage)
@@ -121,12 +103,9 @@ public class AIMovement : MonoBehaviour
 		if (slowdownPercentage == 0)
 			rigidbody.velocity = Vector3.zero;
 
-		stunSlowFactor = slowdownPercentage;
-		isStunned = true;
+		maxSpeed = slowdownPercentage * maxSpeed;
 		yield return new WaitForSeconds(time);
-		stunSlowFactor = 1f;
-		isStunned = false;
-        frozenMesh.SetActive(false);
+		maxSpeed = defaultMaxSpeed;
 	}
 
 	public static float XZdistanceBetweenTwoVec3(Vector3 location1, Vector3 location2)
