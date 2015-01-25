@@ -57,7 +57,7 @@ public class BuilderInput : MonoBehaviour
             // Buttons
             if (isPickupButtonPressed)
             {
-                if (pawn.IsHoldingItem)
+                if (pawn.IsHoldingItem || pawn.IsHoldingPlayer)
                 {
                     pawn.DropItem();
                 }
@@ -74,6 +74,14 @@ public class BuilderInput : MonoBehaviour
             else
             {
                 pawn.CeaseFire();
+            }
+        }
+        else
+        {
+            if (pawn.IsBeingHeld)
+            {
+                this.transform.position = pawn.CurrentOwner.CarryPoint.transform.position;
+                this.transform.rotation = pawn.CurrentOwner.CarryPoint.transform.rotation;
             }
         }
     }

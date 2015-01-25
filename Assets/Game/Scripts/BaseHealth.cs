@@ -3,30 +3,19 @@ using System.Collections;
 
 public class BaseHealth : MonoBehaviour 
 {
-	public int startingHP = 100;
+	public int startingHP = 10;
 
-	int health;
-	public int Health
-	{
-		get { return health; }
-		set 
-		{ 
-			health = value; 
-
-			if (Health <= 0 && isAlive)
-				Die();
-		}
-	}
+	public int health;
+	public int Health { get { return health; } set {  health = value; } }
 	
-	bool isAlive = true;
+	protected bool isAlive = true;
 	public bool IsAlive 
 	{
 		get{ return isAlive; }
 		set
 		{
+            Debug.Log("isAlive being set");
 			isAlive = value;
-
-
 		}
 	}
 
@@ -35,20 +24,28 @@ public class BaseHealth : MonoBehaviour
 		Health = startingHP;
 	}
 
-	protected virtual void Respawn()
+	public virtual void Respawn()
 	{
-
+        SetStartingHP();
+        isAlive = true;
 	}
 	
 	public virtual void TakeDamage(int aDamage, Transform aggressor)
 	{
-		Debug.Log (gameObject.name + " Took " + aDamage + " of damage");
-		Health -= aDamage;
+        if (isAlive)
+        {
+            Debug.Log(gameObject.name + " Took " + aDamage + " of damage");
+            Health -= aDamage;
+
+            if (Health <= 0)
+                Die();
+        }
 	}
 	
 	protected virtual void Die()
 	{
 		Debug.Log(gameObject.name + " is dead");
-		IsAlive = false;
+        isAlive = false;
+        Debug.Log(isAlive);
 	}
 }

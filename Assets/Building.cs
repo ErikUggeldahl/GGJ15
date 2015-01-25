@@ -13,7 +13,7 @@ public abstract class Building : MonoBehaviour
     private static List<Building> allBuildings = new List<Building>();
     public static Building[] AllBuildings { get { return allBuildings.ToArray(); } }
 
-    private BuildingState currentBuildingState = BuildingState.UnderConstruction;
+    protected BuildingState currentBuildingState = BuildingState.UnderConstruction;
     public BuildingState CurrentBuildingState { get { return currentBuildingState; } }
 
     public Material UnderConstructionMaterial;

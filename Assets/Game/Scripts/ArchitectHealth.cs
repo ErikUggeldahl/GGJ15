@@ -3,15 +3,31 @@ using System.Collections;
 
 public class ArchitectHealth : BaseHealth {
 
-	// Use this for initialization
-	void Start () 
-	{
-		SetStartingHP();
-	}
+    private ArchitectPawn pawn = null;
+    public ArchitectPawn Pawn { get { return pawn; } }
 
-	protected override void Die ()
-	{
-		base.Die ();
-		Game.Instance.GameOver();
-	}
+    // Use this for initialization
+    void Start()
+    {
+        SetStartingHP();
+    }
+
+    public void Initialize(ArchitectPawn aPawn)
+    {
+        pawn = aPawn;
+    }
+
+    protected override void Die()
+    {
+        if(pawn.totemSegments.Count == 1)
+        {
+            Game.Instance.GameOver();
+        }
+        else
+        {
+            Respawn();
+        }
+
+        pawn.RemoveTotemSegment();
+    }
 }

@@ -27,6 +27,12 @@ public class BuilderPawn : MonoBehaviour
     private bool isHoldingItem = false;
     public bool IsHoldingItem { get { return isHoldingItem; } }
 
+    public bool isHoldingPlayer = false;
+    public bool IsHoldingPlayer { get { return isHoldingPlayer; } }
+
+    public bool isBeingHeld = false;
+    public bool IsBeingHeld { get { return isBeingHeld; } }
+
     private bool isFiring = false;
     public bool IsFiring { get { return isFiring; } }
 
@@ -36,6 +42,7 @@ public class BuilderPawn : MonoBehaviour
 
     public List<HarvestableResource> NearbyResources = new List<HarvestableResource>();
     public List<Building> NearbyBuildings = new List<Building>();
+    public BuilderPawn NearbyPlayer = null;
 
     public Material[] builderMaterials;
     public Mesh[] builderMeshes;
@@ -56,6 +63,38 @@ public class BuilderPawn : MonoBehaviour
         }
     }
 
+    private BuilderPawn currentHeldPlayer = null;
+    public BuilderPawn CurrentHeldPlayer
+    {
+        set
+        {
+            if (value == null) isHoldingPlayer = false;
+            else isHoldingPlayer = true;
+
+            currentHeldPlayer = value;
+        }
+        get
+        {
+            return currentHeldPlayer;
+        }
+    }
+
+    private BuilderPawn currentOwner = null;
+    public BuilderPawn CurrentOwner
+    {
+        set
+        {
+            if (value == null) isBeingHeld = false;
+            else isBeingHeld = true;
+
+            currentOwner = value;
+        }
+        get
+        {
+            return currentOwner;
+        }
+    }
+
     private int health = 0;
     public int Health { set { health = value; } get { return health; } }
 
@@ -69,6 +108,7 @@ public class BuilderPawn : MonoBehaviour
         {
             movementPenaltyPercent = 0.0f;
         }
+
         UpdateBuilderHop();
     }
 
@@ -79,24 +119,27 @@ public class BuilderPawn : MonoBehaviour
 
     void UpdateBuilderHop()
     {
-        if (MeshObject.transform.localPosition.y <= 0)
+        if (builderHealthScript != null && builderHealthScript.IsAlive)
         {
-            if (BuilderMovementScript.xAxisMove != 0 || BuilderMovementScript.yAxisMove != 0)
+            if (MeshObject.transform.localPosition.y <= 0)
             {
-                currentHopVelocity = hopVelocity;
+                if (BuilderMovementScript.xAxisMove != 0 || BuilderMovementScript.yAxisMove != 0)
+                {
+                    currentHopVelocity = hopVelocity;
+                }
+                else
+                {
+                    currentHopVelocity = 0;
+                    MeshObject.transform.localPosition = Vector3.Scale(MeshObject.transform.localPosition, new Vector3(1, 0, 1));
+                }
             }
             else
             {
-                currentHopVelocity = 0;
-                MeshObject.transform.localPosition = Vector3.Scale(MeshObject.transform.localPosition, new Vector3(1, 0, 1));
+                currentHopVelocity -= Time.deltaTime * hopGravity;
             }
-        }
-        else
-        {
-            currentHopVelocity -= Time.deltaTime * hopGravity;
-        }
 
-        MeshObject.transform.localPosition = MeshObject.transform.localPosition + Vector3.up * currentHopVelocity * Time.deltaTime;
+            MeshObject.transform.localPosition = MeshObject.transform.localPosition + Vector3.up * currentHopVelocity * Time.deltaTime;
+        }
     }
 
     public void Initialize(MP_InputDeviceInfo aInputDeviceInfo)
@@ -114,7 +157,7 @@ public class BuilderPawn : MonoBehaviour
 
     public void Fire()
     {
-        if (!IsHoldingItem)
+        if (!IsHoldingItem && !IsFiring)
         {
             if (!IsFiring && !isFiringCoroutineActive)
             {
@@ -126,7 +169,7 @@ public class BuilderPawn : MonoBehaviour
 
     public void CeaseFire()
     {
-        if (IsFiring)
+        if (IsFiring)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     
         {
             isFiring = false;
         }
@@ -136,25 +179,33 @@ public class BuilderPawn : MonoBehaviour
     {
         if (!IsFiring)
         {
-            if (NearbyResources.Count > 0)
+            if (!IsHoldingItem && !IsHoldingPlayer && NearbyPlayer != null)
             {
-                HarvestableResource nearestResource = NearbyResources[0];
-
-                for (int i = 1; i < NearbyResources.Count; i++)
+                NearbyPlayer.Hold(this);
+                CurrentHeldPlayer = NearbyPlayer;
+            }
+            else
+            {
+                if (NearbyResources.Count > 0)
                 {
-                    float smallestDistance = Vector3.Distance(nearestResource.transform.position, this.transform.position);
-                    float nextDistance = Vector3.Distance(NearbyResources[i].transform.position, this.transform.position);
+                    HarvestableResource nearestResource = NearbyResources[0];
 
-                    if (nextDistance < smallestDistance && !nearestResource.IsHeld)
+                    for (int i = 1; i < NearbyResources.Count; i++)
                     {
-                        nearestResource = NearbyResources[i];
-                    }
-                }
+                        float smallestDistance = Vector3.Distance(nearestResource.transform.position, this.transform.position);
+                        float nextDistance = Vector3.Distance(NearbyResources[i].transform.position, this.transform.position);
 
-                if (nearestResource != null)
-                {
-                    nearestResource.Pickup(this);
-                    CurrentHeldResource = nearestResource;
+                        if (nextDistance < smallestDistance && !nearestResource.IsHeld)
+                        {
+                            nearestResource = NearbyResources[i];
+                        }
+                    }
+
+                    if (nearestResource != null)
+                    {
+                        nearestResource.Pickup(this);
+                        CurrentHeldResource = nearestResource;
+                    }
                 }
             }
         }
@@ -183,7 +234,7 @@ public class BuilderPawn : MonoBehaviour
                 else
                 {
                     // Building under construction
-                    NearbyResources.Remove(CurrentHeldResource);
+                    NearbyResources.Clear();
                     hoveredBuilding.ConsumeResource(CurrentHeldResource);
                     CurrentHeldResource = null;
                 }
@@ -191,6 +242,21 @@ public class BuilderPawn : MonoBehaviour
             else
                 return;
         }
+        else if(IsHoldingPlayer)
+        {
+            CurrentHeldPlayer.Drop();
+            CurrentHeldPlayer = null;
+        }
+    }
+
+    public void Hold(BuilderPawn aPawn)
+    {
+        CurrentOwner = aPawn;
+    }
+
+    public void Drop()
+    {
+        CurrentOwner = null;
     }
 
     private bool isFiringCoroutineActive = false;
@@ -208,5 +274,29 @@ public class BuilderPawn : MonoBehaviour
         } while (IsFiring == true);
 
         isFiringCoroutineActive = false;
+    }
+
+    protected virtual void OnTriggerEnter(Collider aCollider)
+    {
+        if (aCollider.gameObject.GetComponent<BuilderPawn>() != null)
+        {
+           // if (aCollider.gameObject.GetComponent<BuilderPawn>() != this)
+           // {
+                BuilderPawn builderPawn = aCollider.gameObject.GetComponent<BuilderPawn>();
+
+                NearbyPlayer = builderPawn;
+            //}
+        }
+    }
+
+    protected virtual void OnTriggerExit(Collider aCollider)
+    {
+        if (aCollider.gameObject.GetComponent<BuilderPawn>() != null)
+        {
+            //if (aCollider.gameObject.GetComponent<BuilderPawn>() != this)
+            //{
+                NearbyPlayer = null;
+           // }
+        }
     }
 }

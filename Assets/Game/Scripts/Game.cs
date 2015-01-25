@@ -65,6 +65,24 @@ public class Game : MonoBehaviour
         }
 	}
 
+    void Update()
+    {
+        bool areAllPlayersDead = true;
+
+        for (int i = 0; i < BuilderPawns.Count; i++)
+        {
+            if(BuilderPawns[i].BuilderHealthScript.IsAlive)
+            {
+                areAllPlayersDead = false;
+            }
+        }
+
+        if (areAllPlayersDead)
+        {
+            Game.Instance.GameOver();
+        }
+    }
+
 	void LateUpdate()
 	{
 		if (Input.GetKeyDown (KeyCode.Escape))

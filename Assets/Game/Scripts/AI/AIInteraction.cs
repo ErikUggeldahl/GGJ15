@@ -46,7 +46,7 @@ public class AIInteraction : MonoBehaviour {
 			else
 				canAttack = false;
 
-			Debug.Log("attack is " + canAttack);
+			//Debug.Log("attack is " + canAttack);
 		}
 	}
 }
