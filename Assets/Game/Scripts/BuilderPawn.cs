@@ -6,6 +6,8 @@ using MPInput;
 
 public class BuilderPawn : MonoBehaviour
 {
+    public GameObject heldSpearObject;
+
     public Ping pingPrefab = null;
 
     public GameObject SpearPrefab;
@@ -270,11 +272,11 @@ public class BuilderPawn : MonoBehaviour
         {
             GameObject projectile = GameObject.Instantiate(SpearPrefab, this.transform.position + Vector3.up * 0.5f, this.transform.rotation) as GameObject;
             projectile.GetComponent<Projectile>().Initialize(DamageSource.Builder, this);
-
+            heldSpearObject.SetActive(false);
             yield return new WaitForSeconds(aWeaponFireAnimationTime);
 
         } while (IsFiring == true && builderHealthScript.IsAlive);
-
+        heldSpearObject.SetActive(true);
         isFiringCoroutineActive = false;
     }
 
