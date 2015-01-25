@@ -51,6 +51,9 @@ public class BuilderPawn : MonoBehaviour
     public Material[] builderMaterials;
     public Mesh[] builderMeshes;
 
+	private int killCount = 0;
+	public int KillCount { set { killCount = value; } get { return killCount; } }
+
     private HarvestableResource currentHeldResource = null;
     public HarvestableResource CurrentHeldResource
     {
