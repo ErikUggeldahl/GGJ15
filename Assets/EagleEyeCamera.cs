@@ -19,9 +19,11 @@ public class EagleEyeCamera : MonoBehaviour
             }
         }
 
-		cameraFOVPercentage = Mathf.Clamp(highestDistance, 8.0f, 30.0f);
-		cameraFOVPercentage = (cameraFOVPercentage - 8.0f) / (30.0f - 8.0f);
-		cameraFOV = (cameraFOVPercentage * 10) + 5.0f;
+		Debug.Log(highestDistance);
+
+		cameraFOVPercentage = Mathf.Clamp(highestDistance, 5.0f, 30.0f);
+		cameraFOVPercentage = (cameraFOVPercentage - 5.0f) / (30.0f - 5.0f);
+		cameraFOV = (cameraFOVPercentage * 2) + 8.0f;
     }
 
     void LateUpdate()
