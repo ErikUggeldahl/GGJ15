@@ -148,17 +148,26 @@ public class GameGrid : MonoBehaviour
 
             int ClusterSize = Random.Range(MinTreeClusterCount,MaxTreeClusterCount);
 
+            
+
             for (int c = 0; c < ClusterSize; c++)
             {
                 GridPosition spawnPosition;
                 int halfRadius = (int)TreeClusterRadius / 2;
 
+                // Just in case, have an escape plan.
+                int maxLoops = 200;
+                int loops = 0;
                 do
                 {
+                    loops++;
                     spawnPosition = new GridPosition(Random.Range(-halfRadius, halfRadius), Random.Range(-halfRadius, halfRadius));
                     spawnPosition += clusterPosition;
                 }
-                while (IsInClearing(spawnPosition) || GetGridSquare(spawnPosition) == null || GetGridSquare(spawnPosition).ResidingObject != null);
+                while ((IsInClearing(spawnPosition) || GetGridSquare(spawnPosition) == null || GetGridSquare(spawnPosition).ResidingObject != null) && loops < maxLoops);
+
+                if (loops >= maxLoops)
+                    continue;
 
                 Tree newTree = Instantiate(TreePrefab, GridToWorldSpace(spawnPosition), Quaternion.identity) as Tree;
                 newTree.transform.parent = treeParent;
