@@ -47,6 +47,8 @@ public class AIMovement : MonoBehaviour
 	public delegate void MovementFinishDel(Transform target);
 	public event MovementFinishDel OnMovementFinish;
 
+    public float turnSpeed = 50.0f;
+
 	// Use this for initialization
 	void Start () 
 	{
@@ -61,8 +63,13 @@ public class AIMovement : MonoBehaviour
 		{
 			if (target != null && canMove) 
 			{
-				transform.LookAt(new Vector3(target.position.x, transform.position.y, target.position.z));
-				if (rigidbody.velocity.magnitude < maxSpeed)
+				//transform.LookAt(new Vector3(target.position.x, transform.position.y, target.position.z));
+
+                Quaternion targetRotation = Quaternion.LookRotation(new Vector3(target.position.x, transform.position.y, target.position.z) - transform.position);
+                Quaternion currentRotation = transform.rotation;
+                transform.rotation = Quaternion.RotateTowards(currentRotation, targetRotation, Time.deltaTime * turnSpeed);
+
+                if (rigidbody.velocity.magnitude < maxSpeed)
 					rigidbody.AddForce(transform.forward * movingSpeed, ForceMode.VelocityChange );
 			}
 			yield return new WaitForFixedUpdate();
