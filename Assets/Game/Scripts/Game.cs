@@ -43,7 +43,7 @@ public class Game : MonoBehaviour
 
         for(int i = 0; i < connectedControllers.Length; i++)
         {
-            if(connectedControllers[i])
+            //if(connectedControllers[i])
             {
                 MP_InputDeviceInfo device = new MP_InputDeviceInfo(MP_eInputType.Controller, i);
 

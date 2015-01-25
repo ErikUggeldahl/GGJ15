@@ -8,6 +8,8 @@ public class BuilderPawn : MonoBehaviour
 {
     public GameObject SpearPrefab;
 
+    public GameObject MeshObject;
+
     public float FireRate = 0.5f;
 
     public float MovementDrag = 2.0f;
@@ -32,6 +34,10 @@ public class BuilderPawn : MonoBehaviour
 
     public List<HarvestableResource> NearbyResources = new List<HarvestableResource>();
     public List<Building> NearbyBuildings = new List<Building>();
+
+
+    public Material[] builderMaterials;
+    public Mesh[] builderMeshes;
 
     private HarvestableResource currentHeldResource = null;
     public HarvestableResource CurrentHeldResource
@@ -72,6 +78,9 @@ public class BuilderPawn : MonoBehaviour
         builderHealthScript = this.gameObject.AddComponent<BuilderHealth>();
         builderHealthScript.Initialize(this);
        // builderHealthScript.Initialize(this, aInputDeviceInfo);
+
+        MeshObject.renderer.material = builderMaterials[aInputDeviceInfo.Index];
+        MeshObject.GetComponent<MeshFilter>().mesh = builderMeshes[aInputDeviceInfo.Index];
     }
 
     public void Fire()
