@@ -61,7 +61,7 @@ public abstract class Building : MonoBehaviour
 
     public virtual bool ConsumeResource(HarvestableResource aResource)
     {
-        if (currentBuildingState == BuildingState.Finished || WoodRequired <= 0 || StoneRequired <= 0)
+        if (currentBuildingState == BuildingState.Finished || (WoodRequired <= 0 && StoneRequired <= 0))
             return false;
 
         if (aResource.gameObject.GetComponent<Tree>() != null)
