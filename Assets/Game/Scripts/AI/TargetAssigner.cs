@@ -35,10 +35,10 @@ public class TargetAssigner : MonoBehaviour {
 	{
 		Debug.Log ("Done Moving");
 		BaseHealth targetHealth = target.GetComponent<BaseHealth> ();
-		if (targetHealth != null)
-			interact.Attack (targetHealth);
-		else
-			Debug.LogWarning (target.name +" Does not have health but AI is trying to attack it");
+		if (targetHealth != null && targetHealth.IsAlive)
+			interact.Attack(targetHealth);
+		//else
+			//Debug.LogWarning (target.name +" Does not have health but AI is trying to attack it");
 	}
 
 	public void PlayerDetected(Transform player)
@@ -61,7 +61,7 @@ public class TargetAssigner : MonoBehaviour {
 			listOfPlayers.RemoveAll(x => x.GetInstanceID () == player.GetInstanceID ());
 		else 
 		{
-			Debug.Log ("Player left bored Sphere without entering agro first");
+			Debug.Log (player.name + " left bored Sphere without entering agro first");
 			return;
 		}
 

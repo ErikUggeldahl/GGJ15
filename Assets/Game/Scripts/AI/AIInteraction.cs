@@ -41,7 +41,7 @@ public class AIInteraction : MonoBehaviour {
 			if (!target.IsAlive)
 			{
 				GetComponent<TargetAssigner>().PlayerLost(target.transform);
-				yield return null;
+				StopCoroutine(delayAttack(target));
 			}
 		}
 		else if (target.IsAlive)
