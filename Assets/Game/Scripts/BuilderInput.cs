@@ -32,10 +32,10 @@ public class BuilderInput : MonoBehaviour
         pingTime -= Time.deltaTime;
 
         // Poll input
-        xAxisMove = MP_Input.GetAxis("MoveHorizontal", inputDeviceInfo);
-        yAxisMove = MP_Input.GetAxis("MoveVertical", inputDeviceInfo);
-        xAxisLook = MP_Input.GetAxis("AimHorizontal", inputDeviceInfo);
-        yAxisLook = MP_Input.GetAxis("AimVertical", inputDeviceInfo);
+        xAxisMove = MP_Input.GetAxis("MoveHorizontal", inputDeviceInfo, MP_eDeadzoneType.Radial);
+        yAxisMove = MP_Input.GetAxis("MoveVertical", inputDeviceInfo, MP_eDeadzoneType.Radial);
+        xAxisLook = MP_Input.GetAxis("AimHorizontal", inputDeviceInfo,MP_eDeadzoneType.Radial);
+        yAxisLook = MP_Input.GetAxis("AimVertical", inputDeviceInfo,MP_eDeadzoneType.Radial);
         
         isFireButtonPressed = MP_Input.GetButton("BuilderFire", inputDeviceInfo);
         isPickupButtonPressed = MP_Input.GetButtonDown("Pickup/Drop", inputDeviceInfo);

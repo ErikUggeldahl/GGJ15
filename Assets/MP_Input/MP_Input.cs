@@ -101,6 +101,13 @@ namespace MPInput
         DpadRight
     }
 
+    public enum MP_eDeadzoneType
+    {
+        None = 0,
+        Axial,
+        Radial
+    }
+
     public class MP_Input : MonoBehaviour
     {
         public static MP_InputConfig Config;
@@ -109,7 +116,8 @@ namespace MPInput
         public const string CONFIG_FILENAME = "MP_InputConfig";
         const float CHECK_FOR_CONNECTED_CONTROLLER_INTERVAL = 1.0f;
         const bool DEBUG_INPUT = false;
-        const float AXIS_DEADZONE = 0.4f;
+        const float AXIS_DEADZONE = 0.5f;
+        const float RADIAL_DEADZONE = 0.5f;
 
         static MP_Input instance = null;
         static MP_Input Instance { get { return instance; } }
@@ -125,8 +133,6 @@ namespace MPInput
             }
             return instance;
         }
-
-
 
         static bool[] controllersConnected = new bool[4] { false, false, false, false };
         static float lastConnectedCheckTime = 0.1f;
@@ -191,14 +197,14 @@ namespace MPInput
             return GetAnyButtonDown(Action, out discard);
         }
 
-        public static float GetAxis(string Action, MP_InputDeviceInfo Device)
+        public static float GetAxis(string Action, MP_InputDeviceInfo Device, MP_eDeadzoneType aDeadzoneType = MP_eDeadzoneType.None)
         {
             if (!Application.isPlaying)
                 return 0;
 
             switch (Device.Device)
             {
-                case MP_eInputType.Controller: return GetControllerAxis(FindAction(Action), Device.Index);
+                case MP_eInputType.Controller: return GetControllerAxis(FindAction(Action), Device.Index,aDeadzoneType);
                 case MP_eInputType.Keyboard: return GetKeyboardAxis(FindAction(Action), Device.Index);
                 default: return 0;
             }
@@ -367,7 +373,7 @@ namespace MPInput
             lastStateUpdate = Time.realtimeSinceStartup;
         }
 
-        static float GetControllerAxis(MP_InputAction Action, int Index)
+        static float GetControllerAxis(MP_InputAction Action, int Index, MP_eDeadzoneType aDeadzoneType = MP_eDeadzoneType.None)
         {
             if (Action == null) return 0;
 
@@ -375,7 +381,7 @@ namespace MPInput
 
             for (int i = 0; i < Action.ControllerInputs.Count; i++)
             {
-                value += AdjustForDeadzone(GetXinputAxis(Action.ControllerInputs[i].Axial, Index, Action.ControllerInputs[i].AxisInvert));
+                value += GetXinputAxis(Action.ControllerInputs[i].Axial, Index, Action.ControllerInputs[i].AxisInvert,aDeadzoneType);
             }
             return Mathf.Clamp(value, -1, 1);
         }
@@ -399,7 +405,7 @@ namespace MPInput
             return (Pos ? 1 : 0) + (Neg ? -1 : 0);
         }
 
-        static float AdjustForDeadzone(float Axis)
+        static float AdjustForAxialDeadzone (float Axis)
         {
             if (Mathf.Abs(Axis) < AXIS_DEADZONE)
                 return 0;
@@ -410,6 +416,17 @@ namespace MPInput
                 return newAxis;
             }
             //return Axis;
+        }
+
+        static float AdjustForRadialDeadzone (float Axis, float perpendicular)
+        {
+            float deadzone = 0.25f;
+            Vector2 stickInput = new Vector2(Axis, perpendicular);
+            if(stickInput.magnitude < RADIAL_DEADZONE)
+                stickInput = Vector2.zero;
+            else
+                stickInput = stickInput.normalized * ((stickInput.magnitude - deadzone) / (1 - deadzone));
+            return stickInput.x;
         }
 
         static bool GetControllerButtonDown(MP_InputAction Action, int Index)
@@ -482,7 +499,7 @@ namespace MPInput
             return false;
         }
 
-        static bool GetXinputButton(MP_eInputXboxAxial Axial, int Index, bool usePreviousState, bool inverse = false)
+        static bool GetXinputButton (MP_eInputXboxAxial Axial, int Index, bool usePreviousState, bool inverse = false)
         {
             if (controllersConnected != null && controllersConnected[Index])
             {
@@ -521,37 +538,61 @@ namespace MPInput
             else return false;
         }
 
-        static float GetXinputAxis(MP_eInputXboxAxial Axial, int Index, bool inverse = false)
+        static float GetXinputAxis (MP_eInputXboxAxial Axial, int Index, bool inverse = false, MP_eDeadzoneType aDeadzoneType = MP_eDeadzoneType.None)
         {
             if (currentStates == null)
                 return 0;
 
             GamePadState gamepadState = currentStates[Index];
 
+            float returnValue = 0.0f;
+
             switch (Axial)
             {
-                case MP_eInputXboxAxial.AButton: return (gamepadState.Buttons.A == ButtonState.Pressed) ? (inverse ? -1.0f : 1.0f) : 0.0f;
-                case MP_eInputXboxAxial.BButton: return (gamepadState.Buttons.B == ButtonState.Pressed) ? (inverse ? -1.0f : 1.0f) : 0.0f;
-                case MP_eInputXboxAxial.XButton: return (gamepadState.Buttons.X == ButtonState.Pressed) ? (inverse ? -1.0f : 1.0f) : 0.0f;
-                case MP_eInputXboxAxial.YButton: return (gamepadState.Buttons.Y == ButtonState.Pressed) ? (inverse ? -1.0f : 1.0f) : 0.0f;
-                case MP_eInputXboxAxial.LeftBumper: return (gamepadState.Buttons.LeftShoulder == ButtonState.Pressed) ? (inverse ? -1.0f : 1.0f) : 0.0f;
-                case MP_eInputXboxAxial.RightBumper: return (gamepadState.Buttons.RightShoulder == ButtonState.Pressed) ? (inverse ? -1.0f : 1.0f) : 0.0f;
-                case MP_eInputXboxAxial.LeftStickButton: return (gamepadState.Buttons.LeftStick == ButtonState.Pressed) ? (inverse ? -1.0f : 1.0f) : 0.0f;
-                case MP_eInputXboxAxial.RightStickButton: return (gamepadState.Buttons.RightStick == ButtonState.Pressed) ? (inverse ? -1.0f : 1.0f) : 0.0f;
-                case MP_eInputXboxAxial.StartButton: return (gamepadState.Buttons.Start == ButtonState.Pressed) ? (inverse ? -1.0f : 1.0f) : 0.0f;
-                case MP_eInputXboxAxial.BackButton: return (gamepadState.Buttons.Back == ButtonState.Pressed) ? (inverse ? -1.0f : 1.0f) : 0.0f;
-                case MP_eInputXboxAxial.DpadUp: return (gamepadState.DPad.Up == ButtonState.Pressed) ? (inverse ? -1.0f : 1.0f) : 0.0f;
-                case MP_eInputXboxAxial.DpadDown: return (gamepadState.DPad.Down == ButtonState.Pressed) ? (inverse ? -1.0f : 1.0f) : 0.0f;
-                case MP_eInputXboxAxial.DpadLeft: return (gamepadState.DPad.Left == ButtonState.Pressed) ? (inverse ? -1.0f : 1.0f) : 0.0f;
-                case MP_eInputXboxAxial.DpadRight: return (gamepadState.DPad.Right == ButtonState.Pressed) ? (inverse ? -1.0f : 1.0f) : 0.0f;
-                case MP_eInputXboxAxial.RightTrigger: return gamepadState.Triggers.Right;
-                case MP_eInputXboxAxial.LeftTrigger: return gamepadState.Triggers.Left;
-                case MP_eInputXboxAxial.LeftStickXAxis: return (inverse ? -1.0f : 1.0f) * gamepadState.ThumbSticks.Left.X;
-                case MP_eInputXboxAxial.LeftStickYAxis: return (inverse ? -1.0f : 1.0f) * gamepadState.ThumbSticks.Left.Y;
-                case MP_eInputXboxAxial.RightStickXAxis: return (inverse ? -1.0f : 1.0f) * gamepadState.ThumbSticks.Right.X;
-                case MP_eInputXboxAxial.RightStickYAxis: return (inverse ? -1.0f : 1.0f) * gamepadState.ThumbSticks.Right.Y;
+                case MP_eInputXboxAxial.AButton: returnValue = (gamepadState.Buttons.A == ButtonState.Pressed) ? (inverse ? -1.0f : 1.0f) : 0.0f;break;
+                case MP_eInputXboxAxial.BButton: returnValue = (gamepadState.Buttons.B == ButtonState.Pressed) ? (inverse ? -1.0f : 1.0f) : 0.0f;break;
+                case MP_eInputXboxAxial.XButton: returnValue = (gamepadState.Buttons.X == ButtonState.Pressed) ? (inverse ? -1.0f : 1.0f) : 0.0f;break;
+                case MP_eInputXboxAxial.YButton: returnValue = (gamepadState.Buttons.Y == ButtonState.Pressed) ? (inverse ? -1.0f : 1.0f) : 0.0f;break;
+                case MP_eInputXboxAxial.LeftBumper: returnValue = (gamepadState.Buttons.LeftShoulder == ButtonState.Pressed) ? (inverse ? -1.0f : 1.0f) : 0.0f;break;
+                case MP_eInputXboxAxial.RightBumper: returnValue = (gamepadState.Buttons.RightShoulder == ButtonState.Pressed) ? (inverse ? -1.0f : 1.0f) : 0.0f;break;
+                case MP_eInputXboxAxial.LeftStickButton: returnValue = (gamepadState.Buttons.LeftStick == ButtonState.Pressed) ? (inverse ? -1.0f : 1.0f) : 0.0f;break;
+                case MP_eInputXboxAxial.RightStickButton: returnValue = (gamepadState.Buttons.RightStick == ButtonState.Pressed) ? (inverse ? -1.0f : 1.0f) : 0.0f;break;
+                case MP_eInputXboxAxial.StartButton: returnValue = (gamepadState.Buttons.Start == ButtonState.Pressed) ? (inverse ? -1.0f : 1.0f) : 0.0f;break;
+                case MP_eInputXboxAxial.BackButton: returnValue = (gamepadState.Buttons.Back == ButtonState.Pressed) ? (inverse ? -1.0f : 1.0f) : 0.0f;break;
+                case MP_eInputXboxAxial.DpadUp: returnValue = (gamepadState.DPad.Up == ButtonState.Pressed) ? (inverse ? -1.0f : 1.0f) : 0.0f;break;
+                case MP_eInputXboxAxial.DpadDown: returnValue = (gamepadState.DPad.Down == ButtonState.Pressed) ? (inverse ? -1.0f : 1.0f) : 0.0f;break;
+                case MP_eInputXboxAxial.DpadLeft: returnValue = (gamepadState.DPad.Left == ButtonState.Pressed) ? (inverse ? -1.0f : 1.0f) : 0.0f;break;
+                case MP_eInputXboxAxial.DpadRight: returnValue = (gamepadState.DPad.Right == ButtonState.Pressed) ? (inverse ? -1.0f : 1.0f) : 0.0f;break;
+                case MP_eInputXboxAxial.RightTrigger: returnValue = gamepadState.Triggers.Right;break;
+                case MP_eInputXboxAxial.LeftTrigger: returnValue = gamepadState.Triggers.Left;break;
+                case MP_eInputXboxAxial.LeftStickXAxis: returnValue = (inverse ? -1.0f : 1.0f) * gamepadState.ThumbSticks.Left.X;break;
+                case MP_eInputXboxAxial.LeftStickYAxis: returnValue = (inverse ? -1.0f : 1.0f) * gamepadState.ThumbSticks.Left.Y;break;
+                case MP_eInputXboxAxial.RightStickXAxis: returnValue = (inverse ? -1.0f : 1.0f) * gamepadState.ThumbSticks.Right.X;break;
+                case MP_eInputXboxAxial.RightStickYAxis: returnValue = (inverse ? -1.0f : 1.0f) * gamepadState.ThumbSticks.Right.Y;break;
                 default: return 0;
             }
+
+            if (aDeadzoneType == MP_eDeadzoneType.Radial)
+            {
+                float perpValue = 0.0f;
+
+                switch (Axial)
+                {
+                    case MP_eInputXboxAxial.LeftStickXAxis: perpValue = (inverse ? -1.0f : 1.0f) * gamepadState.ThumbSticks.Left.Y; break;
+                    case MP_eInputXboxAxial.LeftStickYAxis: perpValue = (inverse ? -1.0f : 1.0f) * gamepadState.ThumbSticks.Left.X; break;
+                    case MP_eInputXboxAxial.RightStickXAxis: perpValue = (inverse ? -1.0f : 1.0f) * gamepadState.ThumbSticks.Right.Y; break;
+                    case MP_eInputXboxAxial.RightStickYAxis: perpValue = (inverse ? -1.0f : 1.0f) * gamepadState.ThumbSticks.Right.X; break;
+                    default: return 0;
+                }
+
+                return AdjustForRadialDeadzone(returnValue, perpValue);
+            }
+            else if (aDeadzoneType == MP_eDeadzoneType.Axial)
+            {
+                return AdjustForAxialDeadzone(returnValue);
+            }
+            else 
+                return returnValue;
         }
 
         static MP_InputAction FindAction(string aActionName)
