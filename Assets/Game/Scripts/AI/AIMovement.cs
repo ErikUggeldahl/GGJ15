@@ -37,6 +37,8 @@ public class AIMovement : MonoBehaviour
 
 	public float defaultMaxSpeed;
 	float maxSpeed;
+
+    float turnSpeed = 20;
 	
 	public bool canMove = true;
 
@@ -63,7 +65,12 @@ public class AIMovement : MonoBehaviour
 		{
 			if (target != null && canMove) 
 			{
-				transform.LookAt(new Vector3(target.position.x, transform.position.y, target.position.z));
+                //transform.LookAt(new Vector3(target.position.x, transform.position.y, target.position.z));
+
+                Quaternion targetRotation = Quaternion.LookRotation(new Vector3(target.position.x, transform.position.y, target.position.z) - transform.position);
+                Quaternion currentRotation = transform.rotation;
+                transform.rotation = Quaternion.RotateTowards(currentRotation, targetRotation, Time.deltaTime * turnSpeed);
+
 				if (rigidbody.velocity.magnitude < maxSpeed)
 					rigidbody.AddForce(transform.forward * movingSpeed, ForceMode.VelocityChange );
 			}
