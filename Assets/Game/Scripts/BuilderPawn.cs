@@ -79,7 +79,7 @@ public class BuilderPawn : MonoBehaviour
 
     void UpdateBuilderHop()
     {
-        if (MeshObject.transform.localPosition.y < 0)
+        if (MeshObject.transform.localPosition.y <= 0)
         {
             if (BuilderMovementScript.xAxisMove != 0 || BuilderMovementScript.yAxisMove != 0)
             {
