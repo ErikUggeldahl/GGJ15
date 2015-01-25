@@ -4,7 +4,7 @@ using System.Collections;
 public class NetPoller : MonoBehaviour
 {
 	private const string URL = "http://www.blackcarbongames.com/cgi-bin/vote.py";
-	private const int POLL_INTERVAL = 3;
+	private const int POLL_INTERVAL = 5;
 
 	private static NetPoller instance;
 	public static NetPoller GetInstance()

@@ -19,15 +19,26 @@ public class AISpawner : MonoBehaviour
     private float numberToSpawn = 1f;
     private const float SPAWN_ACCELERATION_FACTOR = 1.1f;
     public const int MAX_SPAWNS = 300;
+	private const int VOTES_PER_SPAWN = 25;
 
     private Transform spawnParent;
 
     void Start()
     {
         spawnParent = new GameObject("Spawn Parent").transform;
-        
+
+		NetPoller.GetInstance().Polled += OnPollResult;
+
         StartCoroutine(SpawnEnemies());
     }
+
+	void OnPollResult(int good, int bad)
+	{
+		int enemiesToSpawn = bad / VOTES_PER_SPAWN;
+
+		for (int i = 0; i < enemiesToSpawn; i++)
+			SpawnEnemy();
+	}
 
     IEnumerator SpawnEnemies()
     {
@@ -37,8 +48,7 @@ public class AISpawner : MonoBehaviour
 
             for (int i = 0; i < spawnCount; i++)
             {
-                var spawn = (GameObject)Instantiate(SpawnObj, RandomEdgeWorldPosition(), Quaternion.identity);
-                spawn.transform.SetParent(spawnParent);
+				SpawnEnemy();
             }
 
             numberToSpawn *= SPAWN_ACCELERATION_FACTOR;
@@ -46,6 +56,12 @@ public class AISpawner : MonoBehaviour
             yield return new WaitForSeconds(SPAWN_TIMER);
         }
     }
+
+	void SpawnEnemy()
+	{
+		var spawn = (GameObject)Instantiate(SpawnObj, RandomEdgeWorldPosition(), Quaternion.identity);
+		spawn.transform.SetParent(spawnParent);
+	}
 
     void Update()
     {
