@@ -67,6 +67,7 @@ public class AIMovement : MonoBehaviour
 			}
 			yield return new WaitForFixedUpdate();
 		}
+		Debug.Log ("MovementDone");
 		OnMovementFinish.Invoke(target);
 		StartCoroutine(SlowDown(slowDownTime, slowDownDragRate));
 		StopCoroutine(Moving());
