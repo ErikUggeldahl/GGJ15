@@ -28,6 +28,6 @@ public class EagleEyeCamera : MonoBehaviour
     {
         this.transform.position = new Vector3(Game.Instance.ArchitectPawn.transform.position.x, this.transform.position.y, this.transform.position.z);
 
-		Camera.main.fieldOfView = Mathf.Lerp(Camera.main.fieldOfView, cameraFOV, 5.0f * Time.deltaTime);
+		Camera.main.fieldOfView = Mathf.Lerp(Camera.main.fieldOfView, cameraFOV, 0.5f * Time.deltaTime);
     }
 }
