@@ -26,6 +26,8 @@ public class AIHealth : BaseHealth
 	public override void TakeDamage (int aDamage, Transform aggressor)
 	{
 		base.TakeDamage (aDamage, aggressor);
-		//GetComponent<AIMovement>().Target = aggressor;
+		AIMovement aiMovement =  GetComponent<AIMovement>();
+		if (aiMovement.Target.tag == "Architect" && Vector3.Distance(aiMovement.transform.position, Game.Instance.ArchitectPawn.transform.position) > 7.2f)
+			aiMovement.Target = aggressor;
 	}
 }
