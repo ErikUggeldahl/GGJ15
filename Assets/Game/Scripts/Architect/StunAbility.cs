@@ -60,10 +60,13 @@ public class StunAbility : MonoBehaviour
             return;
 
         var aiMovement = hitInfo.transform.GetComponent<AIMovement>();
-        if (aiMovement == null)
+		var bobble = hitInfo.transform.GetComponent<Bobble>();
+        if (aiMovement == null || bobble == null || aiMovement.IsStunned)
             return;
 
         aiMovement.StartStun(Duration, SlowFactor);
+		bobble.IsBobbling = false;
+		bobble.StartBobblingAfterTime(Duration);
 
         CreateIceCube(hitInfo.transform.position);
     }

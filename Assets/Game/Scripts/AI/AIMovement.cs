@@ -38,6 +38,10 @@ public class AIMovement : MonoBehaviour
 	
 	public bool canMove = true;
 
+	private bool isStunned = false;
+	public bool IsStunned { get { return isStunned; } }
+	private float stunSlowFactor = 1f;
+
 	public float movingSpeed;
 
 	public float slowDownTime;
@@ -67,9 +71,9 @@ public class AIMovement : MonoBehaviour
 
                 Quaternion targetRotation = Quaternion.LookRotation(new Vector3(target.position.x, transform.position.y, target.position.z) - transform.position);
                 Quaternion currentRotation = transform.rotation;
-                transform.rotation = Quaternion.RotateTowards(currentRotation, targetRotation, Time.deltaTime * turnSpeed);
+                transform.rotation = Quaternion.RotateTowards(currentRotation, targetRotation, Time.deltaTime * turnSpeed * stunSlowFactor);
 
-                if (rigidbody.velocity.magnitude < maxSpeed)
+                if (rigidbody.velocity.magnitude < maxSpeed * stunSlowFactor)
 					rigidbody.AddForce(transform.forward * movingSpeed, ForceMode.VelocityChange );
 			}
 			yield return new WaitForFixedUpdate();
@@ -109,9 +113,11 @@ public class AIMovement : MonoBehaviour
 		if (slowdownPercentage == 0)
 			rigidbody.velocity = Vector3.zero;
 
-		maxSpeed = slowdownPercentage * maxSpeed;
+		stunSlowFactor = slowdownPercentage;
+		isStunned = true;
 		yield return new WaitForSeconds(time);
-		maxSpeed = defaultMaxSpeed;
+		stunSlowFactor = 1f;
+		isStunned = false;
 	}
 
 	public static float XZdistanceBetweenTwoVec3(Vector3 location1, Vector3 location2)

@@ -11,6 +11,8 @@ public class Bobble : MonoBehaviour
     Vector2 currentPosition;
     Vector2 currentVelocity;
 
+	public bool IsBobbling = true;
+
     public void ApplyImpulse(Vector3 Direction)
     {
         Vector3 localDirection = MeshTransform.InverseTransformDirection(Direction);
@@ -19,6 +21,9 @@ public class Bobble : MonoBehaviour
 
     void Update()
     {
+		if (!IsBobbling)
+			return;
+
         Vector2 targetVector = new Vector3(Mathf.Sin(Time.time * frequency) * angle, 0);
 
 
@@ -31,4 +36,15 @@ public class Bobble : MonoBehaviour
         currentPosition += currentVelocity * Time.deltaTime;
         MeshTransform.localEulerAngles = new Vector3(currentPosition.x, 0, currentPosition.y);
     }
+
+	public void StartBobblingAfterTime(float time)
+	{
+		StartCoroutine(BobbleAfterTime(time));
+	}
+
+	private IEnumerator BobbleAfterTime(float time)
+	{
+		yield return new WaitForSeconds(time);
+		IsBobbling = true;
+	}
 }

@@ -26,7 +26,6 @@ public class AISpawner : MonoBehaviour
     {
         spawnParent = new GameObject("Spawn Parent").transform;
         
-
         StartCoroutine(SpawnEnemies());
     }
 
