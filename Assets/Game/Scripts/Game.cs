@@ -79,17 +79,7 @@ public class Game : MonoBehaviour
 
 	public void Retry()
 	{
-		AICollection aiList = GetComponent<AICollection>();
-
-		foreach (GameObject ai in aiList.AllSpawns)
-			Destroy (ai);
-
-		foreach(BuilderPawn BuilderPawn in BuilderPawns)
-			Destroy(BuilderPawn.gameObject);
-
-		Destroy(ArchitectPawn.gameObject);
-
-		Start();
+		Application.LoadLevel(0);
 	}
 
 	public void Exit()
