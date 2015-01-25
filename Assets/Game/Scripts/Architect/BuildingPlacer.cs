@@ -62,6 +62,9 @@ public class BuildingPlacer : MonoBehaviour
 
     public void StartBuilding(BuildingType buildingType)
     {
+        if (isBuilding)
+            return;
+
         stun.DisableStunning();
 
         isBuilding = true;
