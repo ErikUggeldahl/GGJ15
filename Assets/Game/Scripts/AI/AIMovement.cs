@@ -18,15 +18,15 @@ public class AIMovement : MonoBehaviour
 		}
 	}
 
-	Wall wallToDestroy;
-	public Wall WallToDestroy
+	Wall structureToDestroy;
+	public Wall StructureToDestroy
 	{
-		get { return wallToDestroy; }
+		get { return structureToDestroy; }
 		set 
 		{
-			wallToDestroy = value;
+			structureToDestroy = value;
 			canMove = false;
-			StartCoroutine(ClearWay(wallToDestroy));
+			StartCoroutine(ClearWay(structureToDestroy));
 		}
 	}
 

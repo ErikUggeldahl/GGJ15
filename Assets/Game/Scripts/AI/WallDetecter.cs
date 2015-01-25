@@ -8,9 +8,9 @@ public class WallDetecter : MonoBehaviour {
 	void OnTriggerEnter(Collider other)
 	{
 		Wall wall = other.GetComponent<Wall>();
-		if (wall != null) 
+		if (other.gameObject.layer == LayerMask.NameToLayer("Building")) 
 		{
-			aiMovement.WallToDestroy = wall;
+			aiMovement.StructureToDestroy = wall;
 		}
 	}
 }
