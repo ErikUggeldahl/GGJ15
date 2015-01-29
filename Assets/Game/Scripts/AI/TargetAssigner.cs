@@ -33,7 +33,7 @@ public class TargetAssigner : MonoBehaviour {
 
 	void OnMovementDone(Transform target)
 	{
-		Debug.Log ("Done Moving");
+		//Debug.Log ("Done Moving");
 		BaseHealth targetHealth = target.GetComponent<BaseHealth> ();
 		if (targetHealth != null && targetHealth.IsAlive)
 			interact.Attack(targetHealth);
@@ -45,12 +45,12 @@ public class TargetAssigner : MonoBehaviour {
 	{
 		if (listOfPlayers.Count == 0 || player.tag == "Architect") 
 		{
-			Debug.Log("New Target is: " + player);
+			//Debug.Log("New Target is: " + player);
 			movement.Target = player;
 		}
 		
 		listOfPlayers.Add(player);
-		Debug.Log("Player Detected");
+		//Debug.Log("Player Detected");
 	}
 
 	public void PlayerLost(Transform player)
@@ -61,7 +61,7 @@ public class TargetAssigner : MonoBehaviour {
 			listOfPlayers.RemoveAll(x => x.GetInstanceID () == player.GetInstanceID ());
 		else 
 		{
-			Debug.Log (player.name + " left bored Sphere without entering agro first");
+			//Debug.Log (player.name + " left bored Sphere without entering agro first");
 			return;
 		}
 
@@ -69,7 +69,7 @@ public class TargetAssigner : MonoBehaviour {
 		if (player.GetInstanceID() == movement.Target.GetInstanceID() && movement.Target.tag != "Architect")
 			movement.Target = NearestTransformFromSelf(listOfPlayers);
 
-		Debug.Log("Player Removed");
+		//Debug.Log("Player Removed");
 	}
 
 	public Transform NearestTransformFromSelf(List<Transform> locations)
@@ -90,7 +90,7 @@ public class TargetAssigner : MonoBehaviour {
 				nearestDistance = Vector3.Distance(locations[i].position, transform.position);
 			}
 		}
-		Debug.Log ("Nearest Player is: " + nearest.name);
+		//Debug.Log ("Nearest Player is: " + nearest.name);
 		return nearest;
 	}
 }

@@ -12,6 +12,7 @@ public class Game : MonoBehaviour
     {
         PreGame,
         Game,
+		Pause,
         Win,
         GameOver
     }
@@ -27,7 +28,8 @@ public class Game : MonoBehaviour
     public GameObject architectSpawnLocation;
     public GameObject[] builderSpawnLocations;
 
-	public GameObject Menu;
+	public GameObject menu;
+	public GameObject resume;
 
     void Awake()
     {
@@ -37,7 +39,7 @@ public class Game : MonoBehaviour
 	void Start ()
     {
 		// Hide menu
-		Menu.SetActive(false);
+		menu.SetActive(false);
 
         // ** Create architect player ** //
         GameObject newArchitect = GameObject.Instantiate(ArchitectPrefab, architectSpawnLocation.transform.position, Quaternion.identity) as GameObject;
@@ -79,24 +81,47 @@ public class Game : MonoBehaviour
 
         if (areAllPlayersDead)
         {
-            Game.Instance.GameOver();
+            //Game.Instance.GameOver();
         }
     }
 
 	void LateUpdate()
 	{
-		if (Input.GetKeyDown (KeyCode.Escape))
-			Exit();
+		if (Input.GetKeyDown (KeyCode.Escape) && CurrentGameState != GameState.GameOver)
+		{
+			if (CurrentGameState == GameState.Pause)
+				Resume();
+			else
+				Pause();
+		}
+			
+	}
+
+	void Pause()
+	{
+		CurrentGameState = GameState.Pause;
+		Time.timeScale = 0.0f;
+		menu.SetActive(true);
+	}
+
+	public void Resume()
+	{
+		CurrentGameState = GameState.Game;
+		Time.timeScale = 1.0f;
+		menu.SetActive(false);
 	}
 
 	public void GameOver()
 	{
+		Time.timeScale = 1.0f;
 		CurrentGameState = GameState.GameOver;
-		Menu.SetActive(true);
+		menu.SetActive(true);
+		resume.SetActive(false);
 	}
 
 	public void Retry()
 	{
+		Time.timeScale = 1.0f;
 		Application.LoadLevel(0);
 	}
 

@@ -14,7 +14,7 @@ public class BaseHealth : MonoBehaviour
 		get{ return isAlive; }
 		set
 		{
-            Debug.Log("isAlive being set");
+            //Debug.Log("isAlive being set");
 			isAlive = value;
 		}
 	}
@@ -34,7 +34,7 @@ public class BaseHealth : MonoBehaviour
 	{
         if (isAlive)
         {
-            Debug.Log(gameObject.name + " Took " + aDamage + " of damage");
+            //Debug.Log(gameObject.name + " Took " + aDamage + " of damage");
             Health -= aDamage;
 
             if (Health <= 0)
@@ -44,8 +44,7 @@ public class BaseHealth : MonoBehaviour
 	
 	protected virtual void Die()
 	{
-		Debug.Log(gameObject.name + " is dead");
+		//Debug.Log(gameObject.name + " is dead");
         isAlive = false;
-        Debug.Log(isAlive);
 	}
 }
