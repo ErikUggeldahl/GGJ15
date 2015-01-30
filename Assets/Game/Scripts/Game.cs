@@ -81,7 +81,7 @@ public class Game : MonoBehaviour
 
         if (areAllPlayersDead)
         {
-            //Game.Instance.GameOver();
+            Game.Instance.GameOver();
         }
     }
 
