@@ -31,6 +31,8 @@ public class Game : MonoBehaviour
 	public GameObject menu;
 	public GameObject resume;
 
+	public GameObject noControllerAlert;
+
     void Awake()
     {
         Instance = this;
@@ -60,6 +62,7 @@ public class Game : MonoBehaviour
                 
                 if (newBuilderPawn != null)
                 {
+					newBuilder.GetComponent<BuilderHealth>().onPlayerDeath += CheckIfAllPlayerDead;
                     newBuilderPawn.Initialize(device);
                     BuilderPawns.Add(newBuilderPawn);
                 }
@@ -69,21 +72,25 @@ public class Game : MonoBehaviour
 
     void Update()
     {
-        bool areAllPlayersDead = true;
-
-        for (int i = 0; i < BuilderPawns.Count; i++)
-        {
-            if(BuilderPawns[i].BuilderHealthScript.IsAlive)
-            {
-                areAllPlayersDead = false;
-            }
-        }
-
-        if (areAllPlayersDead)
-        {
-            Game.Instance.GameOver();
-        }
+		if(Input.GetJoystickNames().Length == 0)
+			noControllerAlert.SetActive(true);
+		else
+			noControllerAlert.SetActive(false);
     }
+
+	void CheckIfAllPlayerDead()
+	{
+		bool areAllPlayersDead = true;
+		
+		for (int i = 0; i < BuilderPawns.Count; i++)
+		{
+			if(BuilderPawns[i].BuilderHealthScript.IsAlive)
+				areAllPlayersDead = false;
+		}
+		
+		if(areAllPlayersDead)
+			Game.Instance.GameOver();
+	}
 
 	void LateUpdate()
 	{
